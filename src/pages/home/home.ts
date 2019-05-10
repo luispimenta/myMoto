@@ -20,7 +20,12 @@ export class HomePage {
   uid: string;
 
 // variável utilizada no mapa
+  directionsService = new google.maps.DirectionsService();
+  directionsDisplay = new google.maps.DirectionsRenderer();
   map: any;
+  startPosition: any;
+  originPosition: string;
+  destinationPosition: string;
 
   constructor(
     public navCtrl: NavController,
@@ -31,30 +36,80 @@ export class HomePage {
     private geolocation: Geolocation
     ){}
 
-  ionViewDidLoad() {
-    this.exibeUser();
-    this.geolocation.getCurrentPosition()
-      .then((res) => {
-        const position = new google.maps.LatLng(res.coords.latitude, res.coords.longitude);
+    ionViewDidLoad(){
+      this.exibeUser();
+      this.initializeMap();
+    }
 
-        const mapOpcoes = {
-          zoom: 16,
-          center: position,
+    initializeMap(){
+      this.geolocation.getCurrentPosition()
+      .then((res) => {
+        this.startPosition = new google.maps.LatLng(res.coords.latitude, res.coords.longitude);
+
+        const mapOptions = {
+          zoom: 18,
+          center: this.startPosition,
           disableDefaultUI: true
         }
 
-        this.map = new google.maps.Map(document.getElementById('map'), mapOpcoes);
+        this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        this.directionsDisplay.setMap(this.map);
 
-        const marker = new google.maps.Marker({
-          position: position,
+        const Marker = new google.maps.Marker({
+          position: this.startPosition,
           map: this.map
         });
 
-      }) .catch((err) => {
-        console.log("Puts parça, não conseguimos pegar a sua localização", err);
+      }).catch((err) => {
+        console.log('Vish mano, deu ruim', err);
       });
+    }
 
-  }
+    calculateRoute(){
+      if(this.destinationPosition && this.startPosition){
+        const request = {
+          origin: this.startPosition,
+          destination: this.destinationPosition,
+          travelMode: 'DRIVING'
+        };
+        this.traceRoute(this.directionsService, this.directionsDisplay, request);
+      }
+    }
+
+    traceRoute(service: any, display: any, request: any){
+      service.route(request, function(result, status){
+        if(status == 'OK'){
+          display.setDirections(result);
+        }
+      });
+    }
+
+  // ionViewDidLoad() {
+  //   this.exibeUser();
+  //   this.geolocation.getCurrentPosition()
+  //     .then((res) => {
+  //       const position = new google.maps.LatLng(res.coords.latitude, res.coords.longitude);
+
+  //       const mapOpcoes = {
+  //         zoom: 16,
+  //         center: position,
+  //         disableDefaultUI: true
+  //       }
+
+  //       this.map = new google.maps.Map(document.getElementById('map'), mapOpcoes);
+
+  //       const marker = new google.maps.Marker({
+  //         position: position,
+  //         map: this.map
+  //       });
+
+  //     }) .catch((err) => {
+  //       this.toast.create({
+  //         message: 'Puts parça, infelizmente não conseguimos pegar a sua localização',
+  //         duration: 6000
+  //       }).present();
+  //     });
+  // }
 
   exibeUser(){
     this.afAuth.authState.subscribe(data => {

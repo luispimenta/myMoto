@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { User } from '../../Models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -16,8 +17,8 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
-    public AlertCtrl: AlertController) {
-  }
+    public AlertCtrl: AlertController,
+    ) {}
 
   async login(user: User) {
     try {

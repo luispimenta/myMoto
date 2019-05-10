@@ -1,17 +1,11 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Login</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content padding>
+<ion-content class="bg-amarelo">
+  <div id="img-logo"></div>
   <ion-list inset>
-    <ion-item>
-      <ion-label>Email</ion-label>
-      <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+    <ion-item id="email">
+      <ion-input text-center placeholder="Digite seu Email" type="text" [(ngModel)]="user.email"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label>Senha</ion-label>
-      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    <ion-item id="senha">
+      <ion-input text-center placeholder="Digite sua Senha" type="password" [(ngModel)]="user.password"></ion-input>
     </ion-item>
   </ion-list>
   <div text-center>

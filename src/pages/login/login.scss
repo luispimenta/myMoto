@@ -1,3 +1,26 @@
 page-login {
+    #img-logo{
+        background: url("../../assets/imgs/logo-branco.png")no-repeat;
+        width: 65%;
+        height: 40%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
+    #email{
+        border-radius: 1em;
+        margin-bottom: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 18px;
+    }
+
+    #senha{
+        border-radius: 1em;
+        margin-bottom: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 18px;
+        text-align: center
+    }
 }
