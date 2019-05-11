@@ -33,7 +33,7 @@ export class HomePage {
     private afAuth: AngularFireAuth,
     private toast: ToastController,
     private db: AngularFireDatabase,
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
     ){}
 
     ionViewDidLoad(){
@@ -54,11 +54,6 @@ export class HomePage {
 
         this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
         this.directionsDisplay.setMap(this.map);
-
-        const Marker = new google.maps.Marker({
-          position: this.startPosition,
-          map: this.map
-        });
 
       }).catch((err) => {
         console.log('Vish mano, deu ruim', err);
@@ -84,33 +79,7 @@ export class HomePage {
       });
     }
 
-  // ionViewDidLoad() {
-  //   this.exibeUser();
-  //   this.geolocation.getCurrentPosition()
-  //     .then((res) => {
-  //       const position = new google.maps.LatLng(res.coords.latitude, res.coords.longitude);
-
-  //       const mapOpcoes = {
-  //         zoom: 16,
-  //         center: position,
-  //         disableDefaultUI: true
-  //       }
-
-  //       this.map = new google.maps.Map(document.getElementById('map'), mapOpcoes);
-
-  //       const marker = new google.maps.Marker({
-  //         position: position,
-  //         map: this.map
-  //       });
-
-  //     }) .catch((err) => {
-  //       this.toast.create({
-  //         message: 'Puts parça, infelizmente não conseguimos pegar a sua localização',
-  //         duration: 6000
-  //       }).present();
-  //     });
-  // }
-
+  
   exibeUser(){
     this.afAuth.authState.subscribe(data => {
       if (data && data.email && data.uid) {

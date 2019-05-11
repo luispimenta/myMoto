@@ -1,5 +1,10 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-searchbar placeholder="Para onde você deseja ir?" type="text" [(ngModel)]="destinationPosition"></ion-searchbar>
+      <button ion-button (click)="calculateRoute()">Traçar Rota</button>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <ion-input placeholder="Para onde você deseja ir?" type="text" [(ngModel)]="destinationPosition"></ion-input>
-  <button ion-button (click)="calculateRoute()">Traçar Rota</button>
   <div #map id="map"></div>
 </ion-content>
