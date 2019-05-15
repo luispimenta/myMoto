@@ -19,7 +19,6 @@ export class RegisterPage {
 
   confirm_pass: string;
   nome: string;
-  dataNasc: string;
 
   user = {} as User;
 
@@ -33,7 +32,7 @@ export class RegisterPage {
   }
   
   async register(user: User) {
-    if(user.email == undefined || user.password == undefined || this.confirm_pass == undefined || this.nome == undefined || this.dataNasc == undefined){
+    if(user.email == undefined || user.password == undefined || this.confirm_pass == undefined || this.nome == undefined){
       this.toast.create({
         message: 'Preencha todos os campos',
         duration: 3000
@@ -47,8 +46,9 @@ export class RegisterPage {
             this.setId(res.user.uid);
 
             this.db.database.ref(this.PATH).child(this.getId())
-          .push({ name: this.nome,
-                  dataNasc: this.dataNasc}).then(
+          .push({ 
+			  	name: this.nome,
+                }).then(
             (error) => {
               console.log(error)
             });

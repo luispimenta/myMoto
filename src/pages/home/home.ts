@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
+
+import { LoginPage } from './../login/login';
 
 declare var google;
 
@@ -22,6 +24,7 @@ export class HomePage {
 // variável utilizada no mapa
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer();
+  @ViewChild('map') mapElement: ElementRef;
   map: any;
   startPosition: any;
   originPosition: string;
@@ -52,7 +55,7 @@ export class HomePage {
           disableDefaultUI: true
         }
 
-        this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.directionsDisplay.setMap(this.map);
 
       }).catch((err) => {
@@ -96,12 +99,15 @@ export class HomePage {
           duration: 3000
         }).present();
       } else {
-        this.toast.create({
-          message: 'Não foi possível autenticar.',
-          duration: 3000
-        }).present();
+        this.navCtrl.setRoot(LoginPage);
       }
     });
+  }
+
+  logout(){
+    return this.afAuth.auth.signOut().then(() => {
+      this.navCtrl.setRoot(LoginPage);
+    }).catch((error) => console.log(error));
   }
 
 }

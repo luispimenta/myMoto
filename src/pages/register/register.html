@@ -1,8 +1,40 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Cadastro</ion-title>
-  </ion-navbar>
-</ion-header>
+<ion-content class="background">
+  <div class="degrade">
+    <div class="conteudo" padding>
+      <div class="center">
+        <img src="./assets/imgs/logo.png" class="logo">
+      </div>
+
+      <ion-list inset>
+        <ion-item class="transparent bold">
+          <ion-input type="text" [(ngModel)]="nome" placeholder="Nome"></ion-input>
+        </ion-item>
+
+        <ion-item class="transparent bold">
+          <ion-input type="text" [(ngModel)]="user.email" placeholder="Email"></ion-input>
+        </ion-item>
+
+        <ion-item class="transparent bold">
+          <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
+        </ion-item>
+
+        <ion-item class="transparent bold">
+          <ion-input type="password" [(ngModel)]="confirm_pass" placeholder="Confirmar Senha"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div text-center>
+        <div (click)="register(user)" class="center ctaBotao bold amarelo">
+          Cadastrar
+        </div>
+        <div (click)="Login()" class="center bold txtBuscar mg-top-20 texto-3">
+          Voltar Login
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<!-- 
 <ion-content padding>
   <div>
     <ion-list inset>
@@ -28,7 +60,7 @@
       </ion-item>
     </ion-list>
     <div text-center>
-      <button ion-button (click)="register(user)">Proximo</button>
+      <button ion-button (click)="register(user)">Cadastrar</button>
     </div>
   </div>
-</ion-content>
+</ion-content> -->

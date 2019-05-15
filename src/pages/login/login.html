@@ -1,15 +1,26 @@
-<ion-content class="bg-amarelo">
-  <div id="img-logo"></div>
-  <ion-list inset>
-    <ion-item id="email">
-      <ion-input text-center placeholder="Digite seu Email" type="text" [(ngModel)]="user.email"></ion-input>
-    </ion-item>
-    <ion-item id="senha">
-      <ion-input text-center placeholder="Digite sua Senha" type="password" [(ngModel)]="user.password"></ion-input>
-    </ion-item>
-  </ion-list>
-  <div text-center>
-    <button ion-button (click)="login(user)">Login</button>
-    <button ion-button color="light" (click)="register()">Cadastrar</button>
+<ion-content class="background">
+  <div class="degrade">
+    <div class="conteudo" padding>
+      <div class="center">
+        <img src="./assets/imgs/logo.png" class="logo">
+      </div>
+      <ion-list inset>
+        <ion-item class="transparent bold">
+          <ion-input type="text" [(ngModel)]="user.email" placeholder="E-mail"></ion-input>
+        </ion-item>
+
+        <ion-item class="transparent bold">w
+          <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
+        </ion-item>
+      </ion-list>
+      <div text-center>
+        <div (click)="login(user)" class="center ctaBotao bold amarelo">
+          Entrar
+        </div>
+        <div (click)="register()" class="center bold txtBuscar mg-top-20 texto-3">
+          Cadastrar
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>
