@@ -46,7 +46,7 @@ export class RegisterPage {
             this.setId(res.user.uid);
 
             this.db.database.ref(this.PATH).child(this.getId())
-          .push({ 
+          .set({ 
 			  	name: this.nome,
                 }).then(
             (error) => {

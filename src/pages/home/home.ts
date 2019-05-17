@@ -3,11 +3,11 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
+import mapboxgl from 'mapbox-gl';
+import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 
-import { LoginPage } from './../login/login';
-
-declare var google;
-
+// Gambiarra
+import { LoginPage } from '../../pages/login/login';
 
 @IonicPage()
 @Component({
@@ -22,8 +22,6 @@ export class HomePage {
   uid: string;
 
 // variável utilizada no mapa
-  directionsService = new google.maps.DirectionsService();
-  directionsDisplay = new google.maps.DirectionsRenderer();
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   startPosition: any;
@@ -41,38 +39,59 @@ export class HomePage {
 
     ionViewDidLoad(){
       this.exibeUser();
-      this.initializeMap();
+      // this.initializeMap();
+
+      this.initializeMapbox();
     }
 
-    initializeMap(){
-      this.geolocation.getCurrentPosition()
-      .then((res) => {
-        this.startPosition = new google.maps.LatLng(res.coords.latitude, res.coords.longitude);
-
-        const mapOptions = {
-          zoom: 18,
-          center: this.startPosition,
-          disableDefaultUI: true
-        }
-
-        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        this.directionsDisplay.setMap(this.map);
-
-      }).catch((err) => {
-        console.log('Vish mano, deu ruim', err);
+    initializeMapbox(){
+      mapboxgl.accessToken = 'pk.eyJ1IjoibmV0dG9icnVubyIsImEiOiJjanZwdHR0NjgwNWt2NDltcTJldTg4em1jIn0.ZvUn5iXCN1SV3GAhl-Qsng';
+      const map = new mapboxgl.Map({
+        container: this.mapElement.nativeElement,
+        style: 'mapbox://styles/mapbox/dark-v10', 
+        // mapbox://styles/mapbox/streets-v9
+        zoom: 17,
+        center: [-48.8769, -23.9793]
       });
+
+        var directions = new MapboxDirections({
+          accessToken: mapboxgl.accessToken,
+          unit: 'metric',
+          profile: 'mapbox/driving-traffic',
+          congestion: true,
+          controls: {
+            inputs: true,
+            instructions: false,
+            profileSwitcher: false
+          },
+          placeholderOrigin: 'Onde você está?',
+          placeholderDestination: 'Para onde você deseja ir?',
+        });
+        map.addControl(directions, 'top-left');
+
+
+      this.geolocation.getCurrentPosition()
+        .then((response) => {
+          this.startPosition = response.coords;
+          map.setCenter = ([this.startPosition.longitude, this.startPosition.latitude]);
+
+          var marker = new mapboxgl.Marker()
+            .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
+            .addTo(map);            
+        })
+
     }
 
-    calculateRoute(){
-      if(this.destinationPosition && this.startPosition){
-        const request = {
-          origin: this.startPosition,
-          destination: this.destinationPosition,
-          travelMode: 'DRIVING'
-        };
-        this.traceRoute(this.directionsService, this.directionsDisplay, request);
-      }
-    }
+    // calculateRoute(){
+    //   if(this.destinationPosition && this.startPosition){
+    //     const request = {
+    //       origin: this.startPosition,
+    //       destination: this.destinationPosition,
+    //       travelMode: 'DRIVING'
+    //     };
+    //     this.traceRoute(this.directionsService, this.directionsDisplay, request);
+    //   }
+    // }
 
     traceRoute(service: any, display: any, request: any){
       service.route(request, function(result, status){
