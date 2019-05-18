@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ActionSheetController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -35,6 +35,7 @@ export class HomePage {
     private toast: ToastController,
     private db: AngularFireDatabase,
     private geolocation: Geolocation,
+    public actionSheetController: ActionSheetController
     ){}
 
     ionViewDidLoad(){
@@ -66,8 +67,9 @@ export class HomePage {
         });
         map.addControl(directions, 'top-left');
 
+        var _this = this
         directions.on('destination', function(){
-          alert("Salve salve quebrada, cadê o goro?")
+          _this.presentActionSheet();
         });
 
 
@@ -81,8 +83,47 @@ export class HomePage {
             .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
             .addTo(map);            
         });
-
     }
+
+    async presentActionSheet() {
+      const actionSheet = await this.actionSheetController.create({
+        buttons: [{
+          text: 'Delete',
+          role: 'destructive',
+          icon: 'trash',
+          handler: () => {
+            console.log('Delete clicked');
+          }
+        }, {
+          text: 'Share',
+          icon: 'share',
+          handler: () => {
+            console.log('Share clicked');
+          }
+        }, {
+          text: 'Play (open modal)',
+          icon: 'arrow-dropright-circle',
+          handler: () => {
+            console.log('Play clicked');
+          }
+        }, {
+          text: 'Favorite',
+          icon: 'heart',
+          handler: () => {
+            console.log('Favorite clicked');
+          }
+        }, {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+      });
+      await actionSheet.present();
+    }
+  
   
   exibeUser(){
     this.afAuth.authState.subscribe(data => {
