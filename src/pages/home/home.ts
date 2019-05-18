@@ -21,7 +21,7 @@ export class HomePage {
   private PATH = 'usuarios';
   uid: string;
 
-// variável utilizada no mapa
+// variáveis utilizadas no mapa
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   startPosition: any;
@@ -39,8 +39,6 @@ export class HomePage {
 
     ionViewDidLoad(){
       this.exibeUser();
-      // this.initializeMap();
-
       this.initializeMapbox();
     }
 
@@ -48,8 +46,7 @@ export class HomePage {
       mapboxgl.accessToken = 'pk.eyJ1IjoibmV0dG9icnVubyIsImEiOiJjanZwdHR0NjgwNWt2NDltcTJldTg4em1jIn0.ZvUn5iXCN1SV3GAhl-Qsng';
       const map = new mapboxgl.Map({
         container: this.mapElement.nativeElement,
-        style: 'mapbox://styles/mapbox/dark-v10', 
-        // mapbox://styles/mapbox/streets-v9
+        style: 'mapbox://styles/mapbox/dark-v10',
         zoom: 17,
         center: [-48.8769, -23.9793]
       });
@@ -65,7 +62,7 @@ export class HomePage {
             profileSwitcher: false
           },
           placeholderOrigin: 'Onde você está?',
-          placeholderDestination: 'Para onde você deseja ir?',
+          placeholderDestination: 'Para onde você deseja ir?'
         });
         map.addControl(directions, 'top-left');
 
@@ -74,33 +71,14 @@ export class HomePage {
         .then((response) => {
           this.startPosition = response.coords;
           map.setCenter = ([this.startPosition.longitude, this.startPosition.latitude]);
+          directions.setOrigin([this.startPosition.longitude, this.startPosition.latitude]);
 
           var marker = new mapboxgl.Marker()
             .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
             .addTo(map);            
-        })
+        });
 
     }
-
-    // calculateRoute(){
-    //   if(this.destinationPosition && this.startPosition){
-    //     const request = {
-    //       origin: this.startPosition,
-    //       destination: this.destinationPosition,
-    //       travelMode: 'DRIVING'
-    //     };
-    //     this.traceRoute(this.directionsService, this.directionsDisplay, request);
-    //   }
-    // }
-
-    traceRoute(service: any, display: any, request: any){
-      service.route(request, function(result, status){
-        if(status == 'OK'){
-          display.setDirections(result);
-        }
-      });
-    }
-
   
   exibeUser(){
     this.afAuth.authState.subscribe(data => {
