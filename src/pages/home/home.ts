@@ -66,6 +66,10 @@ export class HomePage {
         });
         map.addControl(directions, 'top-left');
 
+        directions.on('destination', function(){
+          alert("Salve salve quebrada, cadê o goro?")
+        });
+
 
       this.geolocation.getCurrentPosition()
         .then((response) => {
