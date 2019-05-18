@@ -6,4 +6,18 @@ page-home {
     ion-input{
         font-size: 18px;
     }
+
+    // Alinhando inputs de origem e destino ao topo da página
+    .mapboxgl-ctrl-top-left{
+        width: 100%;
+        display: flex;
+	    justify-content: center;
+    }
+    
+    .mapboxgl-ctrl-directions.mapboxgl-ctrl {
+        width: 95%;
+        min-width: 95%;
+        margin: 0;
+        margin-top: 10px;
+    }
 }

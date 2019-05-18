@@ -15,12 +15,14 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 // Páginas
 import { LoginPage } from '../pages/login/login';
+import { HomePage } from './../pages/home/home';
 
 
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage
+    LoginPage,
+    HomePage
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,8 @@ import { LoginPage } from '../pages/login/login';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LoginPage
+    LoginPage,
+    HomePage
   ],
   providers: [
     StatusBar,
