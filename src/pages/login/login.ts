@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { User } from '../../Models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
-
+import { HomePage } from './../home/home';
 
 @IonicPage()
 @Component({
@@ -24,7 +24,7 @@ export class LoginPage {
     try {
       if(user.email !== undefined || user.password !== undefined){
         this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password).then(
-          (res: any) => this.navCtrl.setRoot('HomePage')
+          (res: any) => this.navCtrl.setRoot(HomePage)
           ).catch((error: any) =>
           {
             console.log(error);
