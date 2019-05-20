@@ -42,16 +42,6 @@ export class HomePage {
       this.initializeMapbox();
     }
 
-    exibeAlert(){
-      var teste = 'bunda';
-      const alert = this.alertCtrl.create({
-        title: 'Localização',
-        subTitle: `Sua localização é${teste}`,
-        buttons: ['Ok']
-      });
-      alert.present();
-    }
-
     initializeMapbox(){
       mapboxgl.accessToken = 'pk.eyJ1IjoibmV0dG9icnVubyIsImEiOiJjanZwdHR0NjgwNWt2NDltcTJldTg4em1jIn0.ZvUn5iXCN1SV3GAhl-Qsng';
       const map = new mapboxgl.Map({
@@ -76,9 +66,9 @@ export class HomePage {
         });
         map.addControl(directions, 'top-left');
 
-        directions.on('destination', function(){
-          this.exibeAlert();
-        });
+        // directions.on('destination', function(){
+        //   this.exibeAlert();
+        // });
 
 
       this.geolocation.getCurrentPosition()
