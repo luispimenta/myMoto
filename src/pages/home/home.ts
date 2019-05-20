@@ -25,6 +25,7 @@ export class HomePage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   startPosition: any;
+  pegarOrigem: any;
   
 
   constructor(
@@ -74,6 +75,9 @@ export class HomePage {
       this.geolocation.getCurrentPosition()
         .then((response) => {
           this.startPosition = response.coords;
+
+          // Pego a lng e lat do usuário
+          this.pegarOrigem = new Array(this.startPosition.longitude, this.startPosition.latitude)
           map.setCenter = ([this.startPosition.longitude, this.startPosition.latitude]);
           directions.setOrigin([this.startPosition.longitude, this.startPosition.latitude]);
 
@@ -93,7 +97,6 @@ export class HomePage {
         let listDB = this.db.database.ref('/tasks').child(this.uid);
         listDB.on('value', (snapshot) => {
           const items = snapshot.val();
-          console.log(items);
         })
 
         this.toast.create({

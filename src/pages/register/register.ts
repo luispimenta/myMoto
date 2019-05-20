@@ -11,15 +11,11 @@ import { AngularFireDatabase } from 'angularfire2/database';
 export class RegisterPage {
 
   private PATH = 'usuarios/';
-
-
   id: any;
 
   //variaveis do registro
-
   confirm_pass: string;
   nome: string;
-
   user = {} as User;
 
   constructor(
