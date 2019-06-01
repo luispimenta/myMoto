@@ -1,15 +1,12 @@
-@font-face {
-	font-family: kollekfit;
-	src: url(../assets/fonts/kollektif-bold.ttf) format("ttf");
-	font-weight: 200;
-}
+// Importações
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,700');
 
 // Estilização global
 *{
     font-family: 'Montserrat', sans-serif;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,700');
+// Peso da fonte
 .bold{
     font-weight: 700;
 }
@@ -17,7 +14,7 @@
     font-weight: 300;
 }
 
-// Gif de fundo do App
+// Gif e degradê ao fundo das telas de login a register
 .background{
 	background: url('../../assets/gif/mulher-moto.gif');
 	width: 100vw;
@@ -81,25 +78,14 @@
 }
 
 // Configurações dos textos
-.texto{
-	font-size: 30px;
-	// font-family: kollekfit !important;
-	color:#032539;
-}
-.texto-2{
-	font-size: 25px;
-	// font-family: gidole_regular !important;
-}
-.texto-3{
+.link{
 	font-size: 18px;
 	color: white;
 }
-.txtBuscar{
-	color: white;
-}
+
 
 // Configurações dos botões
-.ctaBotao{
+.btn{
 	padding: 15px;
 	font-size:20px;
 	background: white;

@@ -9,15 +9,15 @@
           <ion-input type="text" [(ngModel)]="user.email" placeholder="E-mail"></ion-input>
         </ion-item>
 
-        <ion-item class="transparent bold">w
+        <ion-item class="transparent bold">
           <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
         </ion-item>
       </ion-list>
       <div text-center>
-        <div (click)="login(user)" class="center ctaBotao bold amarelo">
+        <div (click)="login(user)" class="center btn bold amarelo">
           Entrar
         </div>
-        <div (click)="register()" class="center bold txtBuscar mg-top-20 texto-3">
+        <div (click)="register()" class="center bold mg-top-20 link">
           Cadastrar
         </div>
       </div>

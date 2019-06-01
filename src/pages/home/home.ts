@@ -93,7 +93,7 @@ export class HomePage {
           .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
           .addTo(this.map);
       });
-  }
+    }
 
 
   exibeUser() {
