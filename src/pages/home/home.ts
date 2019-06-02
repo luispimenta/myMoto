@@ -69,9 +69,31 @@ export class HomePage {
     });
     this.map.addControl(this.directions, 'top-left');
     
-    this.directions.on('destination', function (val1) {
+    this.directions.on('destination', (val1) => {
       let pegarDestino = new Array(val1.feature.geometry.coordinates[0], val1.feature.geometry.coordinates[1]);
       console.log(pegarDestino);
+      var teste1 = 20;
+      var teste2 = 30
+
+        let confirm = this.alertCtrl.create({
+          title: 'Realizar Corrida?',
+          message: `Tempo para percorrer: ${teste1} min<br>Distância: ${teste2} km`,
+          buttons: [
+            {
+              text: 'Cancelar',
+              handler: () => {
+                console.log('Disagree clicked');
+              }
+            },
+            {
+              text: 'Confirmar',
+              handler: () => {
+                console.log('Agree clicked');
+              }
+            }
+          ]
+        });
+        confirm.present();
     });
 
 
@@ -93,7 +115,7 @@ export class HomePage {
           .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
           .addTo(this.map);
       });
-    }
+  }
 
 
   exibeUser() {
