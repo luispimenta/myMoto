@@ -27,6 +27,7 @@ export class HomePage {
   directions: any;
   startPosition: any;
   pegarOrigem: any;
+  pegarDestino: any;
   marker: any;
 
   constructor(
@@ -46,7 +47,8 @@ export class HomePage {
 
 
   initializeMapbox() {
-    let pegarDestino = 0;
+    let aux = 0;
+
     mapboxgl.accessToken = 'pk.eyJ1IjoibmV0dG9icnVubyIsImEiOiJjanZwdHR0NjgwNWt2NDltcTJldTg4em1jIn0.ZvUn5iXCN1SV3GAhl-Qsng';
     this.map = new mapboxgl.Map({
       container: this.mapElement.nativeElement,
@@ -70,38 +72,36 @@ export class HomePage {
     });
     this.map.addControl(this.directions, 'top-left');
     
-    this.directions.on('route', (val1) => {
-      if(pegarDestino == 0){
-        console.log(this.directions.getDestination());
-        pegarDestino ++;
-        var teste1 = 20;
-        var teste2 = 30;
+    this.directions.on('route', () => {
+      if(aux == 0){
+        this.pegarDestino = this.directions.getDestination().geometry.coordinates;
+
+        aux ++;
+
         let confirm = this.alertCtrl.create({
           title: 'Realizar Corrida?',
-          message: `Tempo para percorrer: ${teste1} min<br>Distância: ${teste2} km`,
+          message: `Tempo para percorrer:  min<br>Distância:  km`,
           buttons: [
             {
               text: 'Cancelar',
               handler: () => {
-                console.log('Disagree clicked');
+                
               }
             },
             {
               text: 'Confirmar',
               handler: () => {
-                console.log('Agree clicked');
+                console.log(`Essa é a origem ${this.pegarOrigem}`);
+                console.log(`Esse é o destino ${this.pegarDestino}`);
               }
             }
           ]
         });
         confirm.present();
-      } else if(pegarDestino >= 1){
-        pegarDestino = 0;
-        console.log(pegarDestino);
+      } else if(aux >= 1){
+        aux = 0;
+        console.log(aux);
       }
-      // console.log(this.directions.getDestination());
-      // let pegarDestino = new Array(val1.feature.geometry.coordinates[0], val1.feature.geometry.coordinates[1]);
-      // console.log(pegarDestino);
     });
 
 
