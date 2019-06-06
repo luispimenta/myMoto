@@ -91,8 +91,18 @@ export class HomePage {
             {
               text: 'Confirmar',
               handler: () => {
-                console.log(`Essa é a origem ${this.pegarOrigem}`);
-                console.log(`Esse é o destino ${this.pegarDestino}`);
+                this.db.database.ref('/pedidos').child(this.uid)
+                  .set({ 
+                    destino: `${this.pegarDestino}`,
+                    origem: `${this.pegarOrigem}`,
+                    motorista: '',
+                    usuario: this.uid
+                  }).then(
+                  (error) => {
+                  console.log(error)
+                });
+                // console.log(`Essa é a origem ${this.pegarOrigem}`);
+                // console.log(`Esse é o destino ${this.pegarDestino}`);
               }
             }
           ]
@@ -103,7 +113,8 @@ export class HomePage {
         console.log(aux);
       }
     });
-
+    //comando para cancelar o pedido
+    //this.db.database.ref('/pedidos').child(this.uid).remove();
 
     this.geolocation.getCurrentPosition()
       .then((response) => {
