@@ -1,5 +1,5 @@
 import { Component, ElementRef,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -37,7 +37,8 @@ export class HomePage {
     private toast: ToastController,
     private db: AngularFireDatabase,
     private geolocation: Geolocation,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public actionSheetCtrl: ActionSheetController
   ) {}
 
   ionViewDidLoad() {
@@ -93,16 +94,18 @@ export class HomePage {
               handler: () => {
                 this.db.database.ref('/pedidos').child(this.uid)
                   .set({ 
-                    destino: `${this.pegarDestino}`,
-                    origem: `${this.pegarOrigem}`,
+                    destinoLng: `${this.pegarDestino[0]}`,
+                    destinoLat: `${this.pegarDestino[1]}`,
+                    origemLng: `${this.pegarOrigem[0]}`,
+                    origemLat: `${this.pegarOrigem[1]}`,
                     motorista: '',
                     usuario: this.uid
                   }).then(
                   (error) => {
-                  console.log(error)
+                  console.log(error); 
                 });
-                // console.log(`Essa é a origem ${this.pegarOrigem}`);
-                // console.log(`Esse é o destino ${this.pegarDestino}`);
+
+                this.presentActionSheet();
               }
             }
           ]
@@ -136,6 +139,25 @@ export class HomePage {
       });
   }
 
+  presentActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Só um minuto, aguardando resposta do motorista...',
+      buttons: [
+        {
+          text: 'Cancelar corrida',
+          role: 'cancel',
+          handler: () => {
+            let confirm = this.alertCtrl.create({
+              title: 'Corrida cancelada com sucesso',
+            });
+            confirm.present();
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
+  }
 
   exibeUser() {
     this.afAuth.authState.subscribe(data => {
