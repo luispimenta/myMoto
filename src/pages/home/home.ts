@@ -22,13 +22,14 @@ export class HomePage {
   uid: string;
 
   // variáveis utilizadas no mapa
-  @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('map') mapElement: ElementRef; 
   map: any;
   directions: any;
   startPosition: any;
   pegarOrigem: any;
   pegarDestino: any;
   marker: any;
+  item: any;
 
   constructor(
     public navCtrl: NavController,
@@ -99,7 +100,7 @@ export class HomePage {
                     origemLng: `${this.pegarOrigem[0]}`,
                     origemLat: `${this.pegarOrigem[1]}`,
                     motorista: '',
-                    usuario: this.uid
+                    usuario: this.item.name
                   }).then(
                   (error) => {
                   console.log(error); 
@@ -116,8 +117,8 @@ export class HomePage {
         console.log(aux);
       }
     });
-    //comando para cancelar o pedido
-    //this.db.database.ref('/pedidos').child(this.uid).remove();
+    
+    
 
     this.geolocation.getCurrentPosition()
       .then((response) => {
@@ -144,20 +145,49 @@ export class HomePage {
       title: 'Só um minuto, aguardando resposta do motorista...',
       buttons: [
         {
-          text: 'Cancelar corrida',
-          role: 'cancel',
+          text: 'Cancelar pedido',
+          role: 'destructive',
+          icon: 'trash',
           handler: () => {
-            let confirm = this.alertCtrl.create({
+            let cancelar = this.alertCtrl.create({
               title: 'Corrida cancelada com sucesso',
             });
-            confirm.present();
+            cancelar.present();
+            this.db.database.ref('/pedidos').child(this.uid).remove();
           }
         }
       ]
     });
 
     actionSheet.present();
+
+    
+      let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid)
+      pegarMotorista.on('value', (snapshot) => {
+        let value = snapshot.val();
+        if(value.motorista != ""){
+          let actionSheet = this.actionSheetCtrl.create({
+            title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
+            buttons: [
+              {
+                text: 'Cancelar corrida',
+                role: 'destructive',
+                icon: 'trash',
+                handler: () => {
+                  let cancelar = this.alertCtrl.create({
+                    title: 'Corrida cancelada com sucesso',
+                  });
+                  cancelar.present();
+                  this.db.database.ref('/pedidos').child(this.uid).remove();
+                }
+              }
+            ]
+          });
+          actionSheet.present();
+        }
+      })
   }
+
 
   exibeUser() {
     this.afAuth.authState.subscribe(data => {
@@ -166,9 +196,9 @@ export class HomePage {
 
         let listDB = this.db.database.ref(this.PATH).child(this.uid);
         listDB.on('value', (snapshot) => {
-          const items = snapshot.val();
+          this.item = snapshot.val();
           this.toast.create({
-            message: `Boas vindas ` + items.name,
+            message: `Boas vindas ` + this.item.name,
             duration: 3000
           }).present();
         })
