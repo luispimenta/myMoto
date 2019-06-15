@@ -31,6 +31,9 @@ export class HomePage {
   marker: any;
   item: any;
 
+  // exibe informações sobre a resposta do motorista
+  actionSheet: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -141,7 +144,7 @@ export class HomePage {
   }
 
   presentActionSheet() {
-    let actionSheet = this.actionSheetCtrl.create({
+    this.actionSheet = this.actionSheetCtrl.create({
       title: 'Só um minuto, aguardando resposta do motorista...',
       buttons: [
         {
@@ -159,13 +162,15 @@ export class HomePage {
       ]
     });
 
-    actionSheet.present();
+    this.actionSheet.present();
 
     
       let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid)
       pegarMotorista.on('value', (snapshot) => {
         let value = snapshot.val();
         if(value.motorista != ""){
+          this.actionSheet.dismiss();
+
           let actionSheet = this.actionSheetCtrl.create({
             title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
             buttons: [
