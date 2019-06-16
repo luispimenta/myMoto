@@ -32,7 +32,8 @@ export class HomePage {
   item: any;
 
   // exibe informações sobre a resposta do motorista
-  actionSheet: any;
+  respMotorista: any;
+  motoristaAceitou: any;
 
   constructor(
     public navCtrl: NavController,
@@ -144,7 +145,7 @@ export class HomePage {
   }
 
   presentActionSheet() {
-    this.actionSheet = this.actionSheetCtrl.create({
+    this.respMotorista = this.actionSheetCtrl.create({
       title: 'Só um minuto, aguardando resposta do motorista...',
       buttons: [
         {
@@ -162,16 +163,16 @@ export class HomePage {
       ]
     });
 
-    this.actionSheet.present();
+    this.respMotorista.present();
 
     
       let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid)
       pegarMotorista.on('value', (snapshot) => {
         let value = snapshot.val();
         if(value.motorista != ""){
-          this.actionSheet.dismiss();
+          this.respMotorista.dismiss();
 
-          let actionSheet = this.actionSheetCtrl.create({
+          this.motoristaAceitou = this.actionSheetCtrl.create({
             title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
             buttons: [
               {
@@ -188,7 +189,17 @@ export class HomePage {
               }
             ]
           });
-          actionSheet.present();
+          this.motoristaAceitou.present();
+          pegarMotorista.on('value', (snapshot) => {
+            let value = snapshot.val();
+            if(value.motorista == ""){
+              let motoristaCancelou = this.alertCtrl.create({
+                  title: 'O motorista cancelou a corrida, tente novamente',
+                });
+                motoristaCancelou.present();
+                this.motoristaAceitou.dismiss();
+            }
+          });
         }
       })
   }
@@ -219,5 +230,4 @@ export class HomePage {
       this.navCtrl.setRoot(LoginPage);
     }).catch((error) => console.log(error));
   }
-
 }
