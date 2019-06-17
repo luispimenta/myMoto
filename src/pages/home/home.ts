@@ -30,6 +30,7 @@ export class HomePage {
   pegarDestino: any;
   marker: any;
   item: any;
+  distanciaFixed: any;
 
   // exibe informações sobre a resposta do motorista
   respMotorista: any;
@@ -68,6 +69,7 @@ export class HomePage {
       unit: 'metric',
       profile: 'mapbox/driving-traffic',
       congestion: true,
+      interactive: false,
       controls: {
         inputs: true,
         instructions: false,
@@ -78,15 +80,20 @@ export class HomePage {
     });
     this.map.addControl(this.directions, 'top-left');
     
-    this.directions.on('route', () => {
+    this.directions.on('route', (data) => {
       if(aux == 0){
+        let distancia = data.route[0].distance/1000;
+        this.distanciaFixed = distancia.toFixed(2);
+        let preco = (this.distanciaFixed*3)+4;
+        console.log("preço", preco);
+        console.log("distancia: ",distancia);
         this.pegarDestino = this.directions.getDestination().geometry.coordinates;
 
         aux ++;
 
         let confirm = this.alertCtrl.create({
           title: 'Realizar Corrida?',
-          message: `Tempo para percorrer:  min<br>Distância:  km`,
+          message: `Preço: R$${preco} <br>Distância: ${this.distanciaFixed}km`,
           buttons: [
             {
               text: 'Cancelar',
@@ -104,13 +111,15 @@ export class HomePage {
                     origemLng: `${this.pegarOrigem[0]}`,
                     origemLat: `${this.pegarOrigem[1]}`,
                     motorista: '',
-                    usuario: this.item.name
+                    usuario: this.item.name,
+                    preco: preco
+
                   }).then(
                   (error) => {
                   console.log(error); 
                 });
 
-                this.presentActionSheet();
+                this.aguardando();
               }
             }
           ]
@@ -144,28 +153,58 @@ export class HomePage {
       });
   }
 
-  presentActionSheet() {
-    this.respMotorista = this.actionSheetCtrl.create({
-      title: 'Só um minuto, aguardando resposta do motorista...',
-      buttons: [
-        {
-          text: 'Cancelar pedido',
-          role: 'destructive',
-          icon: 'trash',
-          handler: () => {
-            let cancelar = this.alertCtrl.create({
-              title: 'Corrida cancelada com sucesso',
-            });
-            cancelar.present();
-            this.db.database.ref('/pedidos').child(this.uid).remove();
-          }
+  aguardando(){
+    let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid);
+    pegarMotorista.on('value', (data) =>{
+      let value = data.val(); 
+      if(value !== null){
+        if(value.motorista == ""){
+          this.respMotorista = this.actionSheetCtrl.create({
+            title: 'Só um minuto, aguardando resposta do motorista...',
+            buttons: [
+              {
+                text: 'Cancelar pedido',
+                role: 'destructive',
+                icon: 'trash',
+                handler: () => {
+                  let cancelar = this.alertCtrl.create({
+                    title: 'Corrida cancelada com sucesso',
+                  });
+                  cancelar.present();
+                  this.db.database.ref('/pedidos').child(this.uid).remove();
+                }
+              }
+            ]
+          });
+          this.respMotorista.present();
+        }else{
+          this.motoristaAceitou = this.actionSheetCtrl.create({
+            title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
+            buttons: [
+              {
+                text: 'Cancelar corrida',
+                role: 'destructive',
+                icon: 'trash',
+                handler: () => {
+                  let cancelar = this.alertCtrl.create({
+                    title: 'Corrida cancelada com sucesso',
+                  });
+                  cancelar.present();
+                  this.db.database.ref('/pedidos').child(this.uid).remove();
+                }
+              }
+            ]
+          });
+          this.motoristaAceitou.present();
         }
-      ]
-    });
+      }else{
+        this.motoristaAceitou.dismiss();
+        this.respMotorista.dismiss();
+      }
+    })
+  }
 
-    this.respMotorista.present();
-
-    
+  presentActionSheet() {
       let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid)
       pegarMotorista.on('value', (snapshot) => {
         let value = snapshot.val();
@@ -189,7 +228,6 @@ export class HomePage {
               }
             ]
           });
-          this.motoristaAceitou.present();
           pegarMotorista.on('value', (snapshot) => {
             let value = snapshot.val();
             if(value.motorista == ""){
