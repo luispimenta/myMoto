@@ -20,7 +20,7 @@ export class HomePage {
   nome: string;
   private PATH = 'usuarios/';
   uid: string;
-
+  distanciaFixed: any;
   // variáveis utilizadas no mapa
   @ViewChild('map') mapElement: ElementRef; 
   map: any;
@@ -30,7 +30,6 @@ export class HomePage {
   pegarDestino: any;
   marker: any;
   item: any;
-  distanciaFixed: any;
 
   // exibe informações sobre a resposta do motorista
   respMotorista: any;
@@ -112,7 +111,8 @@ export class HomePage {
                     origemLat: `${this.pegarOrigem[1]}`,
                     motorista: '',
                     usuario: this.item.name,
-                    preco: preco
+                    preco: preco,
+                    status: ''
 
                   }).then(
                   (error) => {
@@ -178,6 +178,16 @@ export class HomePage {
           });
           this.respMotorista.present();
         }else{
+          this.respMotorista.dismiss();
+          console.log(value.status);
+          if(value.status == "finalizado"){
+            let toast = this.toast.create({
+              message: 'Corrida finalizada',
+              duration: 3000
+            });
+            toast.present();
+            this.motoristaAceitou.dismiss();
+          }else{
           this.motoristaAceitou = this.actionSheetCtrl.create({
             title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
             buttons: [
@@ -186,6 +196,7 @@ export class HomePage {
                 role: 'destructive',
                 icon: 'trash',
                 handler: () => {
+                  //this.motoristaAceitou.dismiss();
                   let cancelar = this.alertCtrl.create({
                     title: 'Corrida cancelada com sucesso',
                   });
@@ -197,9 +208,8 @@ export class HomePage {
           });
           this.motoristaAceitou.present();
         }
+        }
       }else{
-        this.motoristaAceitou.dismiss();
-        this.respMotorista.dismiss();
       }
     })
   }
