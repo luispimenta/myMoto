@@ -51,7 +51,6 @@ export class HomePage {
     this.initializeMapbox();
   }
 
-
   initializeMapbox() {
     let aux = 0;
 
@@ -84,24 +83,19 @@ export class HomePage {
         let distancia = data.route[0].distance/1000;
         this.distanciaFixed = distancia.toFixed(2);
         let preco = (this.distanciaFixed*3)+4;
-        console.log("preço", preco);
-        console.log("distancia: ",distancia);
         this.pegarDestino = this.directions.getDestination().geometry.coordinates;
 
         aux ++;
 
         let confirm = this.alertCtrl.create({
           title: 'Realizar Corrida?',
-          message: `Preço: R$${preco} <br>Distância: ${this.distanciaFixed}km`,
+          cssClass: 'alertConfirm',
+          enableBackdropDismiss: false,
+          message: `Preço: R$${preco.toFixed(2)} <hr>Distância: ${this.distanciaFixed}km`,
           buttons: [
             {
-              text: 'Cancelar',
-              handler: () => {
-                
-              }
-            },
-            {
               text: 'Confirmar',
+              cssClass: 'btnConfirm',
               handler: () => {
                 this.db.database.ref('/pedidos').child(this.uid)
                   .set({ 
@@ -114,12 +108,18 @@ export class HomePage {
                     preco: preco,
                     status: ''
 
-                  }).then(
-                  (error) => {
-                  console.log(error); 
-                });
+                  }).then((error) => {
+                      console.log(error); 
+                    });
 
                 this.aguardando();
+              }
+            },
+            {
+              text: 'Cancelar',
+              cssClass: 'btnCancel',
+              handler: () => {
+                
               }
             }
           ]
@@ -127,13 +127,14 @@ export class HomePage {
         confirm.present();
       } else if(aux >= 1){
         aux = 0;
-        console.log(aux);
       }
     });
     
-    
-
-    this.geolocation.getCurrentPosition()
+    let options = {
+      timeout: 3500,
+      enableHighAccuracy: true
+    }
+    this.geolocation.getCurrentPosition(options)
       .then((response) => {
         this.startPosition = response.coords;
 
@@ -161,6 +162,7 @@ export class HomePage {
         if(value.motorista == ""){
           this.respMotorista = this.actionSheetCtrl.create({
             title: 'Só um minuto, aguardando resposta do motorista...',
+            enableBackdropDismiss: false,
             buttons: [
               {
                 text: 'Cancelar pedido',
@@ -169,6 +171,7 @@ export class HomePage {
                 handler: () => {
                   let cancelar = this.alertCtrl.create({
                     title: 'Corrida cancelada com sucesso',
+                    cssClass: 'teste'
                   });
                   cancelar.present();
                   this.db.database.ref('/pedidos').child(this.uid).remove();
@@ -187,29 +190,34 @@ export class HomePage {
             });
             toast.present();
             this.motoristaAceitou.dismiss();
-          }else{
-          this.motoristaAceitou = this.actionSheetCtrl.create({
-            title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
-            buttons: [
-              {
-                text: 'Cancelar corrida',
-                role: 'destructive',
-                icon: 'trash',
-                handler: () => {
-                  //this.motoristaAceitou.dismiss();
-                  let cancelar = this.alertCtrl.create({
-                    title: 'Corrida cancelada com sucesso',
-                  });
-                  cancelar.present();
-                  this.db.database.ref('/pedidos').child(this.uid).remove();
-                }
-              }
-            ]
-          });
-          this.motoristaAceitou.present();
+          } else{
+              let dadosMotorista = this.db.database.ref('motoristas').child(value.motorista);
+              dadosMotorista.once('value', (data) =>{
+                let motorista = data.val();
+
+                this.motoristaAceitou = this.actionSheetCtrl.create({
+                  title: `O motorista ${motorista.nome} está a caminho, aguarde...Cor da Moto: ${motorista.cor}, Placa: ${motorista.placa}`,
+                  enableBackdropDismiss: false,
+                  buttons: [
+                    {
+                      text: 'Cancelar corrida',
+                      role: 'destructive',
+                      icon: 'trash',
+                      handler: () => {
+                        //this.motoristaAceitou.dismiss();
+                        let cancelar = this.alertCtrl.create({
+                          title: 'Corrida cancelada com sucesso',
+                        });
+                        cancelar.present();
+                        this.db.database.ref('/pedidos').child(this.uid).remove();
+                      }
+                    }
+                  ]  
+                });
+                this.motoristaAceitou.present();
+              });
+            }
         }
-        }
-      }else{
       }
     })
   }

@@ -108,3 +108,22 @@ ion-input{
 	width: 50%;
 	margin-top: 15%;
 }
+
+// Estilização do Alert
+.alertCancel{
+	color: red;	
+}
+
+.alertConfirm{
+	.alert-title{
+		font-size: 1.8em;
+		text-align: center;
+	}
+
+	.btnConfirm{
+		color: #68d79a;
+	}
+	.btnCancel{
+		color: #e33d35;
+	}
+}
