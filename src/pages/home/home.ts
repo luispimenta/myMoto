@@ -59,22 +59,22 @@ export class HomePage {
       container: this.mapElement.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v11',
       zoom: 17,
-      center: [-48.8769, -23.9793]
+      center: [-48.8769, -23.9793],
+      // bounds: [-48.904216, -24.003687, -48.861176, -23.950444]
     });
 
     this.directions = new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
       profile: 'mapbox/driving-traffic',
-      placeholderOrigin: "Sua localização",
-      placeholderDestination: "Para onde deseja ir?",
-      congestion: true,
       interactive: false,
       controls: {
         inputs: true,
         instructions: false,
         profileSwitcher: false
       },
+      placeholderDestination: "Bitte geben Sie Ihr Ziel ein.",
+      placeholderOrigin: "Bitte geben Sie Ihren Startpunkt ein."
     });
     this.map.addControl(this.directions, 'top-left');
     
