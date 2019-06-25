@@ -129,12 +129,8 @@ export class HomePage {
         aux = 0;
       }
     });
-    
-    let options = {
-      timeout: 3500,
-      enableHighAccuracy: true
-    }
-    this.geolocation.getCurrentPosition(options)
+
+    this.geolocation.getCurrentPosition()
       .then((response) => {
         this.startPosition = response.coords;
 
