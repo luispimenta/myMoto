@@ -57,7 +57,7 @@ export class HomePage {
     mapboxgl.accessToken = 'pk.eyJ1IjoibmV0dG9icnVubyIsImEiOiJjanZwdHR0NjgwNWt2NDltcTJldTg4em1jIn0.ZvUn5iXCN1SV3GAhl-Qsng';
     this.map = new mapboxgl.Map({
       container: this.mapElement.nativeElement,
-      style: 'mapbox://styles/mapbox/dark-v10',
+      style: 'mapbox://styles/mapbox/streets-v11',
       zoom: 17,
       center: [-48.8769, -23.9793]
     });
@@ -66,6 +66,8 @@ export class HomePage {
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
       profile: 'mapbox/driving-traffic',
+      placeholderOrigin: "Sua localização",
+      placeholderDestination: "Para onde deseja ir?",
       congestion: true,
       interactive: false,
       controls: {
@@ -73,8 +75,6 @@ export class HomePage {
         instructions: false,
         profileSwitcher: false
       },
-      placeholderOrigin: 'Onde você está?',
-      placeholderDestination: 'Para onde você deseja ir?'
     });
     this.map.addControl(this.directions, 'top-left');
     
