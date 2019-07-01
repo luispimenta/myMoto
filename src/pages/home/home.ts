@@ -6,7 +6,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import mapboxgl from 'mapbox-gl';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 
-// Gambiarra
+// Páginas
 import { LoginPage } from '../../pages/login/login';
 
 @IonicPage()
@@ -17,14 +17,14 @@ import { LoginPage } from '../../pages/login/login';
 export class HomePage {
 
   // variáveis usadas no login/cadastro
-  nome: string;
   private PATH = 'usuarios/';
   uid: string;
-  distanciaFixed: any;
+
   // variáveis utilizadas no mapa
   @ViewChild('map') mapElement: ElementRef; 
   map: any;
   directions: any;
+  distanciaFixed: any;
   startPosition: any;
   pegarOrigem: any;
   pegarDestino: any;
@@ -59,8 +59,7 @@ export class HomePage {
       container: this.mapElement.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v11',
       zoom: 17,
-      center: [-48.8769, -23.9793],
-      // bounds: [-48.904216, -24.003687, -48.861176, -23.950444]
+      center: [-48.8769, -23.9793]
     });
 
     this.directions = new MapboxDirections({
@@ -147,6 +146,9 @@ export class HomePage {
         this.marker = new mapboxgl.Marker()
           .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
           .addTo(this.map);
+      })
+      .catch((err) => {
+        console.log("Caiu aqui ooou");
       });
   }
 
