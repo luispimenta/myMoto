@@ -89,6 +89,8 @@ export class HomePage {
   }
 
   addDirections(){
+    let aux = 0;
+
     this.directions = new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
@@ -105,12 +107,18 @@ export class HomePage {
     this.map.addControl(this.directions, 'top-left');
 
     this.directions.on('route', (data) => {
-      let distancia = data.route[0].distance / 1000;
-      this.distanciaFixed = distancia.toFixed(2);
-      let preco = (this.distanciaFixed * 3) + 4;
-      this.pegarDestino = this.directions.getDestination().geometry.coordinates;
+      if(aux == 0){
+        let distancia = data.route[0].distance / 1000;
+        this.distanciaFixed = distancia.toFixed(2);
+        let preco = (this.distanciaFixed * 3) + 4;
+        this.pegarDestino = this.directions.getDestination().geometry.coordinates;
 
-      this.confirmCorrida(preco);
+        aux++
+
+        this.confirmCorrida(preco);
+      } else if(aux >= 1){
+        aux = 0;
+      }
     });
   }
 
@@ -143,7 +151,7 @@ export class HomePage {
           text: 'Cancelar',
           cssClass: 'btnCancel',
           handler: () => {
-
+            (<HTMLSelectElement>document.querySelector('#mapbox-directions-destination-input > .mapboxgl-ctrl-geocoder > input')).value = '';
           }
         }
       ]
