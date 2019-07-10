@@ -9,8 +9,8 @@ page-home {
 
     // Alinhando inputs de origem e destino ao topo da página
     .mapboxgl-ctrl-top-left{
-        width: 100%;
-        display: flex;
+      width: 100%;
+      display: flex;
 	    justify-content: center;
     }
     
@@ -23,5 +23,13 @@ page-home {
 
     .mapboxgl-ctrl-geocoder input[type='text']::placeholder {
       color: #666;
+    }
+
+    .mapbox-directions-origin .suggestions {
+      margin-top: 40px !important;
+    }
+
+    .mapboxgl-ctrl-geocoder .mapbox-directions-destination .suggestions {
+      top: 20px;
     }
 }
