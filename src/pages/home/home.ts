@@ -70,13 +70,14 @@ export class HomePage {
       center: latLng,
       mapTypeControl: false,
       zoom: 17,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true
     }
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     this.directionsDisplay.setMap(this.map);
 
     var _this = this;
-    this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(this.divDirections.nativeElement);
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.divDirections.nativeElement);
 
     var autocompleteOrigem = new google.maps.places.Autocomplete(this.campoOrigem.nativeElement);
     autocompleteOrigem.bindTo('bounds', this.map);
@@ -233,6 +234,9 @@ export class HomePage {
 
         // e se nesse caso estiver sem motorista:
         if (value.motorista == "") {
+          if(_this.motoristaAceitou && _this.motoristaAceitou.dismiss)
+            _this.motoristaAceitou.dismiss();
+
           _this.respMotorista = this.actionSheetCtrl.create({
             title: 'Só um minuto, aguardando resposta do motorista...',
             enableBackdropDismiss: false,
