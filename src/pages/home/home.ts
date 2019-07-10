@@ -3,8 +3,6 @@ import { IonicPage, NavController, NavParams, ToastController, AlertController, 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
-import mapboxgl from 'mapbox-gl';
-import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 
 // Páginas
 import { LoginPage } from '../../pages/login/login';
