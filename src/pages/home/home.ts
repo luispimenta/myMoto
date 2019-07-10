@@ -154,10 +154,6 @@ export class HomePage {
         // Deixando o centro do mapa na localização do usuário
         this.map.setCenter(new google.maps.LatLng(this.startPosition.latitude,this.startPosition.longitude))
 
-        // Dizendo ao directions que é aqui o ponto inicial
-        // this.directions.setOrigin([]);
-        // this.campoOrigem.nativeElement.value = "sua posição atual";
-        // this.campoOrigem.nativeElement.value = `${this.startPosition.longitude},${this.startPosition.latitude}`;
         var geocoder = new google.maps.Geocoder;
         geocoder.geocode({'location': { lat: this.startPosition.latitude, lng: this.startPosition.longitude } }, function(results, status) {
           if (status === 'OK') {
@@ -175,6 +171,7 @@ export class HomePage {
       });
   }
 
+  // chamado para fazer o traçado entre os dois pontos
   addDirections(){
     var _this = this;
     var request = {
@@ -187,22 +184,18 @@ export class HomePage {
       if (status == 'OK') {
         _this.directionsDisplay.setDirections(result);
         _this.markerOrigem.setVisible(false);
+
+        // no resultado da consulta da rota ao google maps,
+        // seta o lat e lng do destino
+        _this.pegarDestino = result.routes[0].legs[0].end_location;
+
+        let distancia = result.routes[0].legs[0].distance.value / 1000;
+        _this.distanciaFixed = distancia.toFixed(2);
+        let preco = (_this.distanciaFixed * 3) + 4;
+
+        _this.confirmCorrida(preco);
       }
     });
-    // this.directions.on('route', (data) => {
-    //   if(aux == 0){
-    //     let distancia = data.route[0].distance / 1000;
-    //     this.distanciaFixed = distancia.toFixed(2);
-    //     let preco = (this.distanciaFixed * 3) + 4;
-    //     this.pegarDestino = this.directions.getDestination().geometry.coordinates;
-
-    //     aux++
-
-    //     this.confirmCorrida(preco);
-    //   } else if(aux >= 1){
-    //     aux = 0;
-    //   }
-    // });
   }
 
   confirmCorrida(preco){
@@ -217,8 +210,8 @@ export class HomePage {
           handler: () => {
             this.db.database.ref('/pedidos').child(this.uid)
               .set({
-                destinoLng: `${this.pegarDestino[0]}`,
-                destinoLat: `${this.pegarDestino[1]}`,
+                destinoLng: `${this.pegarDestino[1]}`,
+                destinoLat: `${this.pegarDestino[0]}`,
                 origemLng: `${this.pegarOrigem[0]}`,
                 origemLat: `${this.pegarOrigem[1]}`,
                 motorista: '',
