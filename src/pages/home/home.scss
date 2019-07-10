@@ -7,6 +7,30 @@ page-home {
         font-size: 18px;
     }
 
+    .directions {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,1);
+      z-index: 5;
+      .ion-input {
+        color: black;
+        display: block;
+        width: 100%;
+        font-size: 18px;
+        padding: 3px 6px;
+        background: rgba(255, 255, 255, .4);
+        margin: 10px;
+        border: 1px solid #ccc;
+        &::placeholder {
+          color: #555;
+        }
+
+
+      }
+    }
+
     // Alinhando inputs de origem e destino ao topo da página
     .mapboxgl-ctrl-top-left{
       width: 100%;

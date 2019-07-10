@@ -8,6 +8,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 
 // Páginas
 import { LoginPage } from '../../pages/login/login';
+declare var google;
 
 @IonicPage()
 @Component({
@@ -20,9 +21,17 @@ export class HomePage {
   private PATH = 'usuarios/';
   uid: string;
 
+
   // variáveis utilizadas no mapa
   @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('divDirections') divDirections: ElementRef;
+  @ViewChild('campoOrigem') campoOrigem: ElementRef;
+  @ViewChild('campoDestino') campoDestino: ElementRef;
   map: any;
+  directionsService: any;
+  directionsDisplay: any;
+  markerOrigem: any;
+
   directions: any;
   distanciaFixed: any;
   startPosition: any;
@@ -48,7 +57,76 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.exibeUser();
-    this.initializeMapbox();
+    this.initializeGoogleMaps();
+    // this.initializeMapbox();
+  }
+
+  initializeGoogleMaps() {
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsDisplay = new google.maps.DirectionsRenderer();
+
+    let latLng = new google.maps.LatLng(-23.9793, -48.8769);
+    let mapOptions = {
+      center: latLng,
+      mapTypeControl: false,
+      zoom: 17,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.directionsDisplay.setMap(this.map);
+
+    var _this = this;
+    this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(this.divDirections.nativeElement);
+
+    var autocompleteOrigem = new google.maps.places.Autocomplete(this.campoOrigem.nativeElement);
+    autocompleteOrigem.bindTo('bounds', this.map);
+    autocompleteOrigem.setFields(['address_components', 'geometry', 'icon', 'name']);
+    autocompleteOrigem.addListener('place_changed', function() {
+      var place = autocompleteOrigem.getPlace();
+      if (!place.geometry) {
+        window.alert("No details available for input: '" + place.name + "'");
+        return;
+      }
+
+      // If the place has a geometry, then present it on a map.
+      if (place.geometry.viewport) {
+        _this.map.fitBounds(place.geometry.viewport);
+      } else {
+        _this.map.setCenter(place.geometry.location);
+        _this.map.setZoom(17);  // Why 17? Because it looks good.
+      }
+      
+      _this.addDirections();
+    });
+    
+    var autocompleteDestino = new google.maps.places.Autocomplete(this.campoDestino.nativeElement);
+    autocompleteDestino.bindTo('bounds', this.map);
+    autocompleteDestino.setFields(['address_components', 'geometry', 'icon', 'name']);
+    autocompleteDestino.addListener('place_changed', function() {
+      var place = autocompleteDestino.getPlace();
+      if (!place.geometry) {
+        window.alert("No details available for input: '" + place.name + "'");
+        return;
+      }
+
+      // If the place has a geometry, then present it on a map.
+      if (place.geometry.viewport) {
+        _this.map.fitBounds(place.geometry.viewport);
+      } else {
+        _this.map.setCenter(place.geometry.location);
+        _this.map.setZoom(17);  // Why 17? Because it looks good.
+      }
+
+      _this.addDirections();
+    });
+
+    // Adicionando marcador de localização
+    this.markerOrigem = new google.maps.Marker({
+      map: this.map,
+      anchorPoint: new google.maps.Point(0, -29)
+    });
+
+    this.pegaPosicao();
   }
 
   initializeMapbox() {
@@ -65,7 +143,8 @@ export class HomePage {
   }
 
   pegaPosicao() {
-    this.geolocation.getCurrentPosition({ timeout: 5000 })
+    var _this = this;
+    this.geolocation.getCurrentPosition({timeout: 15000, enableHighAccuracy: true, maximumAge: 75000})
       .then((response) => {
         this.startPosition = response.coords;
 
@@ -73,15 +152,22 @@ export class HomePage {
         this.pegarOrigem = new Array(this.startPosition.longitude, this.startPosition.latitude);
 
         // Deixando o centro do mapa na localização do usuário
-        this.map.setCenter = [this.startPosition.longitude, this.startPosition.latitude];
+        this.map.setCenter(new google.maps.LatLng(this.startPosition.latitude,this.startPosition.longitude))
 
         // Dizendo ao directions que é aqui o ponto inicial
-        this.directions.setOrigin([this.startPosition.longitude, this.startPosition.latitude]);
+        // this.directions.setOrigin([]);
+        // this.campoOrigem.nativeElement.value = "sua posição atual";
+        // this.campoOrigem.nativeElement.value = `${this.startPosition.longitude},${this.startPosition.latitude}`;
+        var geocoder = new google.maps.Geocoder;
+        geocoder.geocode({'location': { lat: this.startPosition.latitude, lng: this.startPosition.longitude } }, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+              _this.campoOrigem.nativeElement.value = results[0].formatted_address;
+            }
+          }
+        });
 
-        // Adicionando marcador de localização
-        this.marker = new mapboxgl.Marker()
-          .setLngLat([this.startPosition.longitude, this.startPosition.latitude])
-          .addTo(this.map);
+        this.markerOrigem.setPosition(new google.maps.LatLng(this.startPosition.latitude,this.startPosition.longitude))
       })
       .catch((err) => {
         console.log(err.message);
@@ -90,37 +176,33 @@ export class HomePage {
   }
 
   addDirections(){
-    let aux = 0;
-
-    this.directions = new MapboxDirections({
-      accessToken: mapboxgl.accessToken,
-      unit: 'metric',
-      profile: 'mapbox/driving-traffic',
-      interactive: false,
-      placeholderDestination: "Tu tá aqui rapaz",
-      placeholderOrigin: "Tu quer ir pra onde loke?",
-      controls: {
-        inputs: true,
-        instructions: false,
-        profileSwitcher: false
-      },
-    });
-    this.map.addControl(this.directions, 'top-left');
-
-    this.directions.on('route', (data) => {
-      if(aux == 0){
-        let distancia = data.route[0].distance / 1000;
-        this.distanciaFixed = distancia.toFixed(2);
-        let preco = (this.distanciaFixed * 3) + 4;
-        this.pegarDestino = this.directions.getDestination().geometry.coordinates;
-
-        aux++
-
-        this.confirmCorrida(preco);
-      } else if(aux >= 1){
-        aux = 0;
+    var _this = this;
+    var request = {
+      origin: this.campoOrigem.nativeElement.value,
+      destination: this.campoDestino.nativeElement.value,
+      travelMode: 'DRIVING'
+    };
+    this.directionsService.route(request, function(result, status) {
+      console.log(result, status);
+      if (status == 'OK') {
+        _this.directionsDisplay.setDirections(result);
+        _this.markerOrigem.setVisible(false);
       }
     });
+    // this.directions.on('route', (data) => {
+    //   if(aux == 0){
+    //     let distancia = data.route[0].distance / 1000;
+    //     this.distanciaFixed = distancia.toFixed(2);
+    //     let preco = (this.distanciaFixed * 3) + 4;
+    //     this.pegarDestino = this.directions.getDestination().geometry.coordinates;
+
+    //     aux++
+
+    //     this.confirmCorrida(preco);
+    //   } else if(aux >= 1){
+    //     aux = 0;
+    //   }
+    // });
   }
 
   confirmCorrida(preco){
@@ -271,7 +353,7 @@ export class HomePage {
         listDB.on('value', (snapshot) => {
           this.item = snapshot.val();
           this.toast.create({
-            message: `Boas vindas ` + this.item.name,
+            message: `Seja bem-vindo ` + this.item.name,
             duration: 3000
           }).present();
         })
