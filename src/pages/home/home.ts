@@ -129,19 +129,6 @@ export class HomePage {
     this.pegaPosicao();
   }
 
-  initializeMapbox() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoibmV0dG9icnVubyIsImEiOiJjanZwdHR0NjgwNWt2NDltcTJldTg4em1jIn0.ZvUn5iXCN1SV3GAhl-Qsng';
-    this.map = new mapboxgl.Map({
-      container: this.mapElement.nativeElement,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      zoom: 17,
-      center: [-48.8769, -23.9793]
-    });
-
-    this.pegaPosicao();
-    this.addDirections();
-  }
-
   pegaPosicao() {
     var _this = this;
     this.geolocation.getCurrentPosition({timeout: 15000, enableHighAccuracy: true, maximumAge: 75000})
@@ -188,6 +175,7 @@ export class HomePage {
         // no resultado da consulta da rota ao google maps,
         // seta o lat e lng do destino
         _this.pegarDestino = result.routes[0].legs[0].end_location;
+        _this.pegarOrigem = result.routes[0].legs[0].start_location;
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
         _this.distanciaFixed = distancia.toFixed(2);
@@ -199,6 +187,7 @@ export class HomePage {
   }
 
   confirmCorrida(preco){
+    var _this = this;
     let confirm = this.alertCtrl.create({
       title: 'Realizar Corrida?',
       cssClass: 'alertConfirm',
@@ -210,24 +199,23 @@ export class HomePage {
           handler: () => {
             this.db.database.ref('/pedidos').child(this.uid)
               .set({
-                destinoLng: `${this.pegarDestino[1]}`,
-                destinoLat: `${this.pegarDestino[0]}`,
-                origemLng: `${this.pegarOrigem[0]}`,
-                origemLat: `${this.pegarOrigem[1]}`,
+                destinoLng: `${this.pegarDestino.lng()}`,
+                destinoLat: `${this.pegarDestino.lat()}`,
+                origemLng: `${this.pegarOrigem.lng()}`,
+                origemLat: `${this.pegarOrigem.lat()}`,
                 motorista: '',
                 usuario: this.item.name,
                 preco: preco,
                 status: ''
               });
-
-            this.aguardando();
           }
         },
         {
           text: 'Cancelar',
           cssClass: 'btnCancel',
           handler: () => {
-            (<HTMLSelectElement>document.querySelector('#mapbox-directions-destination-input > .mapboxgl-ctrl-geocoder > input')).value = '';
+            _this.campoDestino.nativeElement.value = '';
+            // confirm.dismiss();
           }
         }
       ]
@@ -235,13 +223,17 @@ export class HomePage {
     confirm.present();
   }
 
-  aguardando() {
+  esperarPorAlteracoesNaCorrida() {
     let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid);
+    var _this = this;
     pegarMotorista.on('value', (data) => {
       let value = data.val();
       if (value !== null) {
+        // se tiver algum valor neste registro no banco de dados
+
+        // e se nesse caso estiver sem motorista:
         if (value.motorista == "") {
-          this.respMotorista = this.actionSheetCtrl.create({
+          _this.respMotorista = this.actionSheetCtrl.create({
             title: 'Só um minuto, aguardando resposta do motorista...',
             enableBackdropDismiss: false,
             buttons: [{
@@ -249,18 +241,24 @@ export class HomePage {
               role: 'destructive',
               icon: 'trash',
               handler: () => {
-                let cancelar = this.alertCtrl.create({
+                let cancelar = _this.alertCtrl.create({
                   title: 'Corrida cancelada com sucesso',
                   cssClass: 'teste'
                 });
                 cancelar.present();
-                this.db.database.ref('/pedidos').child(this.uid).remove();
+                _this.db.database.ref('/pedidos').child(_this.uid).remove();
+                _this.campoDestino.nativeElement.value = '';
               }
             }]
           });
-          this.respMotorista.present();
-        } else {
+          _this.respMotorista.present();
+        }
+
+        // caso o motorista tenha aceitado ou esteja preenchido
+        else {
+          if(this.respMotorista && this.respMotorista.dismiss)
           this.respMotorista.dismiss();
+
           console.log(value.status);
           if (value.status == "finalizado") {
             let toast = this.toast.create({
@@ -268,13 +266,19 @@ export class HomePage {
               duration: 3000
             });
             toast.present();
-            this.motoristaAceitou.dismiss();
+            if(_this.motoristaAceitou && _this.motoristaAceitou.dismiss)
+              _this.motoristaAceitou.dismiss();
+            // apaga a rota
+            _this.directionsDisplay.set('directions', null);
+            _this.campoDestino.nativeElement.value = '';
+
+
           } else {
             let dadosMotorista = this.db.database.ref('motoristas').child(value.motorista);
             dadosMotorista.once('value', (data) => {
               let motorista = data.val();
 
-              this.motoristaAceitou = this.actionSheetCtrl.create({
+              _this.motoristaAceitou = _this.actionSheetCtrl.create({
                 title: `O motorista ${motorista.nome} está a caminho, aguarde...Cor da Moto: ${motorista.cor}, Placa: ${motorista.placa}`,
                 enableBackdropDismiss: false,
                 buttons: [{
@@ -283,64 +287,29 @@ export class HomePage {
                   icon: 'trash',
                   handler: () => {
                     //this.motoristaAceitou.dismiss();
-                    let cancelar = this.alertCtrl.create({
+                    let cancelar = _this.alertCtrl.create({
                       title: 'Corrida cancelada com sucesso',
                     });
                     cancelar.present();
-                    this.db.database.ref('/pedidos').child(this.uid).remove();
+                    _this.db.database.ref('/pedidos').child(this.uid).remove();
                   }
                 }]
               });
-              this.motoristaAceitou.present();
+              _this.motoristaAceitou.present();
             });
           }
         }
       }
+    
     })
   }
-
-  presentActionSheet() {
-    let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid);
-    pegarMotorista.on('value', (snapshot) => {
-      let value = snapshot.val();
-      if (value.motorista != "") {
-        this.respMotorista.dismiss();
-
-        this.motoristaAceitou = this.actionSheetCtrl.create({
-          title: 'A corrida foi aceita. Um motorista está a caminho, aguarde',
-          buttons: [{
-            text: 'Cancelar corrida',
-            role: 'destructive',
-            icon: 'trash',
-            handler: () => {
-              let cancelar = this.alertCtrl.create({
-                title: 'Corrida cancelada com sucesso',
-              });
-              cancelar.present();
-              this.db.database.ref('/pedidos').child(this.uid).remove();
-            }
-          }]
-        });
-
-        pegarMotorista.on('value', (snapshot) => {
-          let value = snapshot.val();
-          if (value.motorista == "") {
-            let motoristaCancelou = this.alertCtrl.create({
-              title: 'O motorista cancelou a corrida, tente novamente',
-            });
-            motoristaCancelou.present();
-            this.motoristaAceitou.dismiss();
-          }
-        });
-      }
-    });
-  }
-
 
   exibeUser() {
     this.afAuth.authState.subscribe(data => {
       if (data && data.email && data.uid) {
         this.uid = data.uid;
+
+        this.esperarPorAlteracoesNaCorrida();
 
         let listDB = this.db.database.ref(this.PATH).child(this.uid);
         listDB.on('value', (snapshot) => {
