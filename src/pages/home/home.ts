@@ -76,7 +76,7 @@ export class HomePage {
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     this.directionsDisplay.setMap(this.map);
 
-    var _this = this;
+    var self = this;
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.divDirections.nativeElement);
 
     var autocompleteOrigem = new google.maps.places.Autocomplete(this.campoOrigem.nativeElement);
@@ -91,13 +91,13 @@ export class HomePage {
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
-        _this.map.fitBounds(place.geometry.viewport);
+        self.map.fitBounds(place.geometry.viewport);
       } else {
-        _this.map.setCenter(place.geometry.location);
-        _this.map.setZoom(17);  // Why 17? Because it looks good.
+        self.map.setCenter(place.geometry.location);
+        self.map.setZoom(17);  // Why 17? Because it looks good.
       }
       
-      _this.addDirections();
+      self.addDirections();
     });
     
     var autocompleteDestino = new google.maps.places.Autocomplete(this.campoDestino.nativeElement);
@@ -112,13 +112,13 @@ export class HomePage {
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
-        _this.map.fitBounds(place.geometry.viewport);
+        self.map.fitBounds(place.geometry.viewport);
       } else {
-        _this.map.setCenter(place.geometry.location);
-        _this.map.setZoom(17);  // Why 17? Because it looks good.
+        self.map.setCenter(place.geometry.location);
+        self.map.setZoom(17);  // Why 17? Because it looks good.
       }
 
-      _this.addDirections();
+      self.addDirections();
     });
 
     // Adicionando marcador de localização
@@ -131,7 +131,7 @@ export class HomePage {
   }
 
   pegaPosicao() {
-    var _this = this;
+    var self = this;
     this.geolocation.getCurrentPosition({timeout: 15000, enableHighAccuracy: true, maximumAge: 75000})
       .then((response) => {
         this.startPosition = response.coords;
@@ -146,7 +146,7 @@ export class HomePage {
         geocoder.geocode({'location': { lat: this.startPosition.latitude, lng: this.startPosition.longitude } }, function(results, status) {
           if (status === 'OK') {
             if (results[0]) {
-              _this.campoOrigem.nativeElement.value = results[0].formatted_address;
+              self.campoOrigem.nativeElement.value = results[0].formatted_address;
             }
           }
         });
@@ -161,7 +161,7 @@ export class HomePage {
 
   // chamado para fazer o traçado entre os dois pontos
   addDirections(){
-    var _this = this;
+    var self = this;
     var request = {
       origin: this.campoOrigem.nativeElement.value,
       destination: this.campoDestino.nativeElement.value,
@@ -170,25 +170,25 @@ export class HomePage {
     this.directionsService.route(request, function(result, status) {
       console.log(result, status);
       if (status == 'OK') {
-        _this.directionsDisplay.setDirections(result);
-        _this.markerOrigem.setVisible(false);
+        self.directionsDisplay.setDirections(result);
+        self.markerOrigem.setVisible(false);
 
         // no resultado da consulta da rota ao google maps,
         // seta o lat e lng do destino
-        _this.pegarDestino = result.routes[0].legs[0].end_location;
-        _this.pegarOrigem = result.routes[0].legs[0].start_location;
+        self.pegarDestino = result.routes[0].legs[0].end_location;
+        self.pegarOrigem = result.routes[0].legs[0].start_location;
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
-        _this.distanciaFixed = distancia.toFixed(2);
-        let preco = (_this.distanciaFixed * 3) + 4;
+        self.distanciaFixed = distancia.toFixed(2);
+        let preco = (self.distanciaFixed * 3) + 4;
 
-        _this.confirmCorrida(preco);
+        self.confirmCorrida(preco);
       }
     });
   }
 
   confirmCorrida(preco){
-    var _this = this;
+    var self = this;
     let confirm = this.alertCtrl.create({
       title: 'Realizar Corrida?',
       cssClass: 'alertConfirm',
@@ -215,7 +215,7 @@ export class HomePage {
           text: 'Cancelar',
           cssClass: 'btnCancel',
           handler: () => {
-            _this.campoDestino.nativeElement.value = '';
+            self.campoDestino.nativeElement.value = '';
             // confirm.dismiss();
           }
         }
@@ -226,7 +226,7 @@ export class HomePage {
 
   esperarPorAlteracoesNaCorrida() {
     let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid);
-    var _this = this;
+    var self = this;
     pegarMotorista.on('value', (data) => {
       let value = data.val();
       if (value !== null) {
@@ -234,10 +234,10 @@ export class HomePage {
 
         // e se nesse caso estiver sem motorista:
         if (value.motorista == "") {
-          if(_this.motoristaAceitou && _this.motoristaAceitou.dismiss)
-            _this.motoristaAceitou.dismiss();
+          if(self.motoristaAceitou && self.motoristaAceitou.dismiss)
+            self.motoristaAceitou.dismiss();
 
-          _this.respMotorista = this.actionSheetCtrl.create({
+          self.respMotorista = this.actionSheetCtrl.create({
             title: 'Só um minuto, aguardando resposta do motorista...',
             enableBackdropDismiss: false,
             buttons: [{
@@ -245,17 +245,17 @@ export class HomePage {
               role: 'destructive',
               icon: 'trash',
               handler: () => {
-                let cancelar = _this.alertCtrl.create({
+                let cancelar = self.alertCtrl.create({
                   title: 'Corrida cancelada com sucesso',
                   cssClass: 'teste'
                 });
                 cancelar.present();
-                _this.db.database.ref('/pedidos').child(_this.uid).remove();
-                _this.campoDestino.nativeElement.value = '';
+                self.db.database.ref('/pedidos').child(self.uid).remove();
+                self.campoDestino.nativeElement.value = '';
               }
             }]
           });
-          _this.respMotorista.present();
+          self.respMotorista.present();
         }
 
         // caso o motorista tenha aceitado ou esteja preenchido
@@ -270,11 +270,11 @@ export class HomePage {
               duration: 3000
             });
             toast.present();
-            if(_this.motoristaAceitou && _this.motoristaAceitou.dismiss)
-              _this.motoristaAceitou.dismiss();
+            if(self.motoristaAceitou && self.motoristaAceitou.dismiss)
+              self.motoristaAceitou.dismiss();
             // apaga a rota
-            _this.directionsDisplay.set('directions', null);
-            _this.campoDestino.nativeElement.value = '';
+            self.directionsDisplay.set('directions', null);
+            self.campoDestino.nativeElement.value = '';
 
 
           } else {
@@ -282,7 +282,7 @@ export class HomePage {
             dadosMotorista.once('value', (data) => {
               let motorista = data.val();
 
-              _this.motoristaAceitou = _this.actionSheetCtrl.create({
+              self.motoristaAceitou = self.actionSheetCtrl.create({
                 title: `O motorista ${motorista.nome} está a caminho, aguarde...Cor da Moto: ${motorista.cor}, Placa: ${motorista.placa}`,
                 enableBackdropDismiss: false,
                 buttons: [{
@@ -291,15 +291,15 @@ export class HomePage {
                   icon: 'trash',
                   handler: () => {
                     //this.motoristaAceitou.dismiss();
-                    let cancelar = _this.alertCtrl.create({
+                    let cancelar = self.alertCtrl.create({
                       title: 'Corrida cancelada com sucesso',
                     });
                     cancelar.present();
-                    _this.db.database.ref('/pedidos').child(this.uid).remove();
+                    self.db.database.ref('/pedidos').child(this.uid).remove();
                   }
                 }]
               });
-              _this.motoristaAceitou.present();
+              self.motoristaAceitou.present();
             });
           }
         }
