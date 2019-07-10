@@ -65,7 +65,7 @@ export class HomePage {
   }
 
   pegaPosicao() {
-    this.geolocation.getCurrentPosition({ timeout: 2000 })
+    this.geolocation.getCurrentPosition({ timeout: 5000 })
       .then((response) => {
         this.startPosition = response.coords;
 
@@ -84,6 +84,7 @@ export class HomePage {
           .addTo(this.map);
       })
       .catch((err) => {
+        console.log(err.message);
         console.log("Caiu aqui ooou");
       });
   }
