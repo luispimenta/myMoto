@@ -151,7 +151,7 @@ export class HomePage {
           text: 'Cancelar',
           cssClass: 'btnCancel',
           handler: () => {
-            (<HTMLSelectElement>document.querySelector('#mapbox-directions-destination-input > .mapboxgl-ctrl-geocoder > input')).value = '';
+            this.deleteValueInput();
           }
         }
       ]
@@ -179,6 +179,7 @@ export class HomePage {
                 });
                 cancelar.present();
                 this.db.database.ref('/pedidos').child(this.uid).remove();
+                this.deleteValueInput();
               }
             }]
           });
@@ -206,12 +207,12 @@ export class HomePage {
                   role: 'destructive',
                   icon: 'trash',
                   handler: () => {
-                    //this.motoristaAceitou.dismiss();
                     let cancelar = this.alertCtrl.create({
                       title: 'Corrida cancelada com sucesso',
                     });
                     cancelar.present();
                     this.db.database.ref('/pedidos').child(this.uid).remove();
+                    this.deleteValueInput();
                   }
                 }]
               });
@@ -258,6 +259,10 @@ export class HomePage {
         });
       }
     });
+  }
+
+  deleteValueInput(){
+    (<HTMLSelectElement>document.querySelector('#mapbox-directions-destination-input > .mapboxgl-ctrl-geocoder > input')).value = '';
   }
 
 
