@@ -36,7 +36,7 @@ export class RegisterPage {
     }else{
       if(user.password == this.confirm_pass){
         try {
-          this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
+          this.afAuth.auth.createUserWithEmailAndPassword(user.email.toLowerCase(), user.password)
           .then((res: any) =>{
 
             this.setId(res.user.uid);

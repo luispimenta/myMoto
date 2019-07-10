@@ -26,7 +26,7 @@ export class LoginPage {
   async login(user: User) {
     try {
       if(user.email !== undefined || user.password !== undefined){
-        this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password).then((res: any) => {
+        this.afAuth.auth.signInWithEmailAndPassword(user.email.toLowerCase(), user.password).then((res: any) => {
           let uid = res.user.uid;
           
           let listDB = this.db.database.ref(this.PATH).child(uid);
