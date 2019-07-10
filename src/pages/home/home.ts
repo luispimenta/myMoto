@@ -65,7 +65,7 @@ export class HomePage {
   }
 
   pegaPosicao() {
-    this.geolocation.getCurrentPosition()
+    this.geolocation.getCurrentPosition({ timeout: 5000 })
       .then((response) => {
         this.startPosition = response.coords;
 
@@ -73,7 +73,7 @@ export class HomePage {
         this.pegarOrigem = new Array(this.startPosition.longitude, this.startPosition.latitude);
 
         // Deixando o centro do mapa na localização do usuário
-        this.map.setCenter = ([this.startPosition.longitude, this.startPosition.latitude]);
+        this.map.setCenter = [this.startPosition.longitude, this.startPosition.latitude];
 
         // Dizendo ao directions que é aqui o ponto inicial
         this.directions.setOrigin([this.startPosition.longitude, this.startPosition.latitude]);
@@ -84,6 +84,7 @@ export class HomePage {
           .addTo(this.map);
       })
       .catch((err) => {
+        console.log(err.message);
         console.log("Caiu aqui ooou");
       });
   }
@@ -96,13 +97,13 @@ export class HomePage {
       unit: 'metric',
       profile: 'mapbox/driving-traffic',
       interactive: false,
+      placeholderDestination: "Tu tá aqui rapaz",
+      placeholderOrigin: "Tu quer ir pra onde loke?",
       controls: {
         inputs: true,
         instructions: false,
         profileSwitcher: false
       },
-      placeholderDestination: "Tu tá aqui rapaz",
-      placeholderOrigin: "Tu quer ir pra onde loke?"
     });
     this.map.addControl(this.directions, 'top-left');
 
