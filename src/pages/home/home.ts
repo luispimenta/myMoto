@@ -58,7 +58,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.exibeUser();
     this.initializeGoogleMaps();
-    // this.initializeMapbox();
   }
 
   initializeGoogleMaps() {
@@ -394,7 +393,7 @@ export class HomePage {
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
         self.distanciaFixed = distancia.toFixed(2);
-        let preco = (self.distanciaFixed * 3) + 4;
+        let preco = (self.distanciaFixed * 3) + 3;
 
         self.confirmCorrida(preco);
       }
