@@ -549,10 +549,4 @@ export class HomePage {
   config(){
     this.navCtrl.push(ConfigPage);
   }
-
-  logout() {
-    return this.afAuth.auth.signOut().then(() => {
-      this.navCtrl.setRoot(LoginPage);
-    }).catch((error) => console.log(error));
-  }
 }
