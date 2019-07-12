@@ -9,26 +9,19 @@ page-home {
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      padding: 10px 0;
-      // box-shadow: 1px 2px 23px #000;
-      // background: rgba(0, 0, 0, 0.5);
-      // border-bottom: 1px solid #666;
+      padding: .5em 0;
 
       .ion-input {
-        // color: black;
         color: white;
         display: block;
         width: 100%;
         font-size: 15px;
-        padding: 8px 12px;
-        // background: white;
+        padding: 15px;
         background: #fbbd00;
-        margin: 2px 10px;
-        // border: 1px solid #999;
+        margin: .2em .5em;
         border: none;
 
         &::placeholder {
-          // color: #333;
           font-weight: bold;
           color: white;
         }
@@ -38,6 +31,6 @@ page-home {
     #icon-config {
       position: absolute;
       right: 1em;
-      top: 8em;
+      top: 10.5em;
     }
 }
