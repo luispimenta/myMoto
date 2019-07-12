@@ -69,9 +69,4 @@ export class LoginPage {
   register() {
     this.navCtrl.push('RegisterPage');
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
-
 }

@@ -1,22 +1,10 @@
-<ion-menu [content]="content" class="my-custom-menu">
-  <ion-content>
-    <button ion-button (click)="logout()" menuClose >Sair</button>
-  </ion-content>
-</ion-menu>
-<ion-nav id="nav" #content [root]="rootPage"></ion-nav>
-<ion-header>
-  <ion-toolbar color="#000">
-      <button ion-button menuToggle icon-only>
-          <ion-icon name='menu'></ion-icon>
-      </button>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <div #map id="map"></div>
 
   <div #divDirections class="directions">
-    <input class="ion-input" #campoOrigem placeholder="origem" />
-    <input class="ion-input" #campoDestino placeholder="destino" />
+    <input class="ion-input" #campoOrigem placeholder="Você está aqui!" />
+    <input class="ion-input" #campoDestino placeholder="Para onde deseja ir?" />
+
+    <img (click)="config()" id="icon-config" src="../../assets/imgs/config.png">
   </div>
 </ion-content>

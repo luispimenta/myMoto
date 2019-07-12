@@ -6,6 +6,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 // Páginas
 import { LoginPage } from '../../pages/login/login';
+import { ConfigPage } from './../config/config';
+
 declare var google;
 
 @IonicPage()
@@ -69,7 +71,222 @@ export class HomePage {
       mapTypeControl: false,
       zoom: 17,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: true
+      disableDefaultUI: true,
+      styles: [
+        {
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#ebe3cd"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#523735"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#f5f1e6"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#c9b2a6"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.land_parcel",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#dcd2be"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.land_parcel",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#ae9e90"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.natural",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#93817c"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#a5b076"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#447530"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#f5f1e6"
+            }
+          ]
+        },
+        {
+          "featureType": "road.arterial",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#fdfcf8"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#f8c967"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#e9bc62"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway.controlled_access",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#e98d58"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway.controlled_access",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#db8555"
+            }
+          ]
+        },
+        {
+          "featureType": "road.local",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#806b63"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#8f7d77"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#ebe3cd"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.station",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#b9d3c2"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#92998d"
+            }
+          ]
+        }
+      ],
     }
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     this.directionsDisplay.setMap(this.map);
@@ -166,7 +383,6 @@ export class HomePage {
       travelMode: 'DRIVING'
     };
     this.directionsService.route(request, function(result, status) {
-      console.log(result, status);
       if (status == 'OK') {
         self.directionsDisplay.setDirections(result);
         self.markerOrigem.setVisible(false);
@@ -213,8 +429,8 @@ export class HomePage {
           text: 'Cancelar',
           cssClass: 'btnCancel',
           handler: () => {
+            self.directionsDisplay.set('directions', null);
             self.campoDestino.nativeElement.value = '';
-            // confirm.dismiss();
           }
         }
       ]
@@ -249,6 +465,7 @@ export class HomePage {
                 });
                 cancelar.present();
                 self.db.database.ref('/pedidos').child(self.uid).remove();
+                self.directionsDisplay.set('directions', null);
                 self.campoDestino.nativeElement.value = '';
               }
             }]
@@ -261,7 +478,6 @@ export class HomePage {
           if(this.respMotorista && this.respMotorista.dismiss)
           this.respMotorista.dismiss();
 
-          console.log(value.status);
           if (value.status == "finalizado") {
             let toast = this.toast.create({
               message: 'Corrida finalizada',
@@ -294,6 +510,8 @@ export class HomePage {
                     });
                     cancelar.present();
                     self.db.database.ref('/pedidos').child(this.uid).remove();
+                    self.directionsDisplay.set('directions', null);
+                    self.campoDestino.nativeElement.value = '';
                   }
                 }]
               });
@@ -326,6 +544,10 @@ export class HomePage {
         this.navCtrl.setRoot(LoginPage);
       }
     });
+  }
+
+  config(){
+    this.navCtrl.push(ConfigPage);
   }
 
   logout() {
