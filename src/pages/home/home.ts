@@ -27,22 +27,17 @@ export class HomePage {
   @ViewChild('divDirections') divDirections: ElementRef;
   @ViewChild('campoOrigem') campoOrigem: ElementRef;
   @ViewChild('campoDestino') campoDestino: ElementRef;
+
   map: any;
   directionsService: any;
   directionsDisplay: any;
   markerOrigem: any;
-
-  directions: any;
   distanciaFixed: any;
   startPosition: any;
   pegarOrigem: any;
   pegarDestino: any;
-  marker: any;
   item: any;
-
-  // exibe informações sobre a resposta do motorista
-  respMotorista: any;
-  motoristaAceitou: any;
+  preco: any;
 
   constructor(
     public navCtrl: NavController,
@@ -58,6 +53,32 @@ export class HomePage {
   ionViewDidLoad() {
     this.exibeUser();
     this.initializeGoogleMaps();
+    this.escondeFazerPedido();
+    this.escondeAguardando();
+    this.escondeMotoristaAceitou();
+    this.escondeCorridaFinalizada();
+  }
+
+  exibeUser() {
+    this.afAuth.authState.subscribe(data => {
+      if (data && data.email && data.uid) {
+        this.uid = data.uid;
+
+        this.esperarPorAlteracoesNaCorrida();
+
+        let listDB = this.db.database.ref(this.PATH).child(this.uid);
+        listDB.on('value', (snapshot) => {
+          this.item = snapshot.val();
+          this.toast.create({
+            message: `Seja bem-vindo ` + this.item.name,
+            duration: 3000
+          }).present();
+        })
+
+      } else {
+        this.navCtrl.setRoot(LoginPage);
+      }
+    });
   }
 
   initializeGoogleMaps() {
@@ -73,6 +94,7 @@ export class HomePage {
       disableDefaultUI: true,
       styles: [
         {
+          // todo esse Json é de estilização do mapa
           "elementType": "geometry",
           "stylers": [
             {
@@ -308,7 +330,7 @@ export class HomePage {
         self.map.fitBounds(place.geometry.viewport);
       } else {
         self.map.setCenter(place.geometry.location);
-        self.map.setZoom(17);  // Why 17? Because it looks good.
+        self.map.setZoom(17);
       }
       
       self.addDirections();
@@ -329,7 +351,7 @@ export class HomePage {
         self.map.fitBounds(place.geometry.viewport);
       } else {
         self.map.setCenter(place.geometry.location);
-        self.map.setZoom(17);  // Why 17? Because it looks good.
+        self.map.setZoom(17);
       }
 
       self.addDirections();
@@ -393,53 +415,17 @@ export class HomePage {
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
         self.distanciaFixed = distancia.toFixed(2);
-        let preco = (self.distanciaFixed * 3) + 3;
+        self.preco = (self.distanciaFixed * 3) + 4;
+        let tempo = result.routes[0].legs[0].duration.value/60;
 
-        self.confirmCorrida(preco);
+        self.exibeFazerPedido();
+        self.divConfirmaCorrida(distancia, tempo, self.preco);
       }
     });
   }
 
-  confirmCorrida(preco){
-    var self = this;
-    let confirm = this.alertCtrl.create({
-      title: 'Realizar Corrida?',
-      cssClass: 'alertConfirm',
-      enableBackdropDismiss: false,
-      message: `Preço: R$${preco.toFixed(2)} <hr>Distância: ${this.distanciaFixed}km`,
-      buttons: [{
-          text: 'Confirmar',
-          cssClass: 'btnConfirm',
-          handler: () => {
-            this.db.database.ref('/pedidos').child(this.uid)
-              .set({
-                destinoLng: `${this.pegarDestino.lng()}`,
-                destinoLat: `${this.pegarDestino.lat()}`,
-                origemLng: `${this.pegarOrigem.lng()}`,
-                origemLat: `${this.pegarOrigem.lat()}`,
-                motorista: '',
-                usuario: this.item.name,
-                preco: preco,
-                status: ''
-              });
-          }
-        },
-        {
-          text: 'Cancelar',
-          cssClass: 'btnCancel',
-          handler: () => {
-            self.directionsDisplay.set('directions', null);
-            self.campoDestino.nativeElement.value = '';
-          }
-        }
-      ]
-    });
-    confirm.present();
-  }
-
   esperarPorAlteracoesNaCorrida() {
     let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid);
-    var self = this;
     pegarMotorista.on('value', (data) => {
       let value = data.val();
       if (value !== null) {
@@ -447,105 +433,137 @@ export class HomePage {
 
         // e se nesse caso estiver sem motorista:
         if (value.motorista == "") {
-          if(self.motoristaAceitou && self.motoristaAceitou.dismiss)
-            self.motoristaAceitou.dismiss();
-
-          self.respMotorista = this.actionSheetCtrl.create({
-            title: 'Só um minuto, aguardando resposta do motorista...',
-            enableBackdropDismiss: false,
-            buttons: [{
-              text: 'Cancelar pedido',
-              role: 'destructive',
-              icon: 'trash',
-              handler: () => {
-                let cancelar = self.alertCtrl.create({
-                  title: 'Corrida cancelada com sucesso',
-                  cssClass: 'teste'
-                });
-                cancelar.present();
-                self.db.database.ref('/pedidos').child(self.uid).remove();
-                self.directionsDisplay.set('directions', null);
-                self.campoDestino.nativeElement.value = '';
-              }
-            }]
-          });
-          self.respMotorista.present();
+            this.escondeFazerPedido();
+            this.escondeMotoristaAceitou();
+            this.exibeAguardando();
         }
 
         // caso o motorista tenha aceitado ou esteja preenchido
         else {
-          if(this.respMotorista && this.respMotorista.dismiss)
-          this.respMotorista.dismiss();
-
           if (value.status == "finalizado") {
-            let toast = this.toast.create({
-              message: 'Corrida finalizada',
-              duration: 3000
-            });
-            toast.present();
-            if(self.motoristaAceitou && self.motoristaAceitou.dismiss)
-              self.motoristaAceitou.dismiss();
-            // apaga a rota
-            self.directionsDisplay.set('directions', null);
-            self.campoDestino.nativeElement.value = '';
-
-
-          } else {
+            this.escondeMotoristaAceitou();
+            this.exibeCorridaFinalizada();
+          } 
+          else {
             let dadosMotorista = this.db.database.ref('motoristas').child(value.motorista);
             dadosMotorista.once('value', (data) => {
               let motorista = data.val();
 
-              self.motoristaAceitou = self.actionSheetCtrl.create({
-                title: `O motorista ${motorista.nome} está a caminho, aguarde...Cor da Moto: ${motorista.cor}, Placa: ${motorista.placa}`,
-                enableBackdropDismiss: false,
-                buttons: [{
-                  text: 'Cancelar corrida',
-                  role: 'destructive',
-                  icon: 'trash',
-                  handler: () => {
-                    //this.motoristaAceitou.dismiss();
-                    let cancelar = self.alertCtrl.create({
-                      title: 'Corrida cancelada com sucesso',
-                    });
-                    cancelar.present();
-                    self.db.database.ref('/pedidos').child(this.uid).remove();
-                    self.directionsDisplay.set('directions', null);
-                    self.campoDestino.nativeElement.value = '';
-                  }
-                }]
-              });
-              self.motoristaAceitou.present();
+              this.divMotoristaAceitou(motorista);
+              this.escondeAguardando();
+              this.exibeMotoristaAceitou();
             });
           }
         }
       }
-    
-    })
-  }
-
-  exibeUser() {
-    this.afAuth.authState.subscribe(data => {
-      if (data && data.email && data.uid) {
-        this.uid = data.uid;
-
-        this.esperarPorAlteracoesNaCorrida();
-
-        let listDB = this.db.database.ref(this.PATH).child(this.uid);
-        listDB.on('value', (snapshot) => {
-          this.item = snapshot.val();
-          this.toast.create({
-            message: `Seja bem-vindo ` + this.item.name,
-            duration: 3000
-          }).present();
-        })
-
-      } else {
-        this.navCtrl.setRoot(LoginPage);
-      }
     });
   }
 
+  
+
   config(){
     this.navCtrl.push(ConfigPage);
+  }
+
+  // Funções que escondem exibição de divs
+  escondeFazerPedido(){
+    document.getElementById('fazerPedido').style.display = "none";
+  }
+  escondeAguardando(){
+    document.getElementById('aguardando').style.display = "none";
+  }
+  escondeMotoristaAceitou(){
+    document.getElementById('motoristaAceitou').style.display = "none";
+  }
+  escondeCorridaFinalizada(){
+    document.getElementById('corridaFinalizada').style.display = "none";
+  }
+
+
+  // Funções que exibem as divs
+  exibeFazerPedido(){
+    document.getElementById('fazerPedido').style.display = "block";
+  }
+  exibeAguardando(){
+    document.getElementById('aguardando').style.display = "block";
+  }
+  exibeMotoristaAceitou(){
+    document.getElementById('motoristaAceitou').style.display = "block";
+  }
+  exibeCorridaFinalizada(){
+    document.getElementById('corridaFinalizada').style.display = "block";
+  }
+
+  // Alterando valor de elementos dentro de divs
+  divConfirmaCorrida(distancia, tempo, preco){
+    document.getElementById('distancia').innerText = `Distância: ${distancia.toFixed(2)} Km`;
+    document.getElementById('tempo').innerText = `Tempo: ${tempo.toFixed(0)} minutos`;
+    document.getElementById('preco').innerText = `Valor: R$${preco.toFixed(2)}`;
+  }
+
+  divMotoristaAceitou(motorista){ 
+    document.getElementById('nomeMotorista').innerText = `Nome: ${motorista.nome}`;
+    document.getElementById('corMoto').innerText = `Cor da Moto: ${motorista.cor}`;
+    document.getElementById('placaMoto').innerText = `Placa da Moto: ${motorista.placa}`;
+  }
+
+  // Botões
+  // envia() é um botão do confirmaCorrida. Chamada quando o usuário deseja realizar a corrida e manda os seus dados para o firebase
+  envia(){
+    let self = this;
+    this.db.database.ref('/pedidos').child(this.uid)
+      .set({
+        destinoLng: `${this.pegarDestino.lng()}`,
+        destinoLat: `${this.pegarDestino.lat()}`,
+        origemLng: `${this.pegarOrigem.lng()}`,
+        origemLat: `${this.pegarOrigem.lat()}`,
+        motorista: '',
+        usuario: this.item.name,
+        preco: self.preco,
+        status: ''
+      });
+  }
+
+  // cancela() é um botão do confirmaCorrida. Chamada quando o usuário não deseja realizar a corrida e quer apagar a rota do mapa para fazer outro pedido
+  cancela(){
+    this.directionsDisplay.set('directions', null);
+    this.campoDestino.nativeElement.value = '';
+    this.escondeFazerPedido();
+  }
+
+  // cancelarAguardo() é um botão do aguardando. Chamada quando o usuário decide cancelar o pedido durante a espera por um motorista
+  cancelarAguardando(){
+    this.escondeAguardando();
+    let cancelar = this.alertCtrl.create({
+      title: 'Corrida cancelada com sucesso',
+      cssClass: 'teste'
+    });
+    cancelar.present();
+    
+    this.db.database.ref('/pedidos').child(this.uid).remove();
+    this.directionsDisplay.set('directions', null);
+    this.campoDestino.nativeElement.value = '';
+  }
+
+  // cancelarCorrida() é um botão do motoristaAceitou. Chamada quando o usuário decide cancelar a corrida quando o motorista já aceitou e está a caminho
+  cancelarCorrida(){
+    this.escondeMotoristaAceitou();
+
+    let cancelar = this.alertCtrl.create({
+      title: 'Corrida cancelada com sucesso',
+    });
+    cancelar.present();
+
+    this.db.database.ref('/pedidos').child(this.uid).remove();
+    this.directionsDisplay.set('directions', null);
+    this.campoDestino.nativeElement.value = '';
+  }
+
+  // confirmar() é um botão do corridaFinalizada. Chamada quando a corrida acaba e o usuário dá uma nota para o motorista
+  confirmar(){
+    this.escondeCorridaFinalizada();
+    this.directionsDisplay.set('directions', null);
+    this.campoDestino.nativeElement.value = '';
+    this.db.database.ref('/pedidos').child(this.uid).remove();
   }
 }

@@ -1,8 +1,9 @@
-page-home {
+  page-home {
     #map{
         height: 100%;
     }
 
+    // div com os inputs de origem e destino
     .directions {
       width: 100%;
       display: flex;
@@ -28,9 +29,139 @@ page-home {
       }
     }
 
+    // Icone logo após os inputs
     #icon-config {
       position: absolute;
       right: 1em;
       top: 10.5em;
+    }
+
+    // Div com informações sobre o pedido de corrida
+    #fazerPedido{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 15em;
+      background: #fbbd00;
+      text-align: center;
+      color: white;
+
+      h2{
+        font-weight: bold;
+      }
+
+      button{
+        padding: 1em 2em;
+        border-radius: 5em;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+      }
+
+      #aceitar{
+        background: #36E12E;
+      }
+      #cancelar{
+        background: #EB3633;
+      }
+    }
+
+    // Div avisando que o pedido foi realizado e é necessário aguardar a resposta de um motorista
+    #aguardando{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 10em;
+      background: #fbbd00;
+      text-align: center;
+      color: white;
+
+      button{
+        padding: 1em 4em;
+        border-radius: 5em;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+      }
+
+      #cancelarAguardando{
+        background: #EB3633;
+      }
+    }
+
+    // Div com informações sobre o motorista que aceitou a corrida
+    #motoristaAceitou{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 18em;
+      background: #fbbd00;
+      text-align: center;
+      color: white;
+
+      h2{
+        font-weight: bold;
+      }
+
+      button{
+        padding: 1em 2em;
+        border-radius: 5em;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+      }
+
+      #verMais{
+        background: #36E12E;
+      }
+      #cancelarCorrida{
+        background: #EB3633;
+      }
+    }
+
+    // Div de fim de corrida com pedido de nota ao motorista
+    #corridaFinalizada{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 20em;
+      background: #fbbd00;
+      color: white;
+
+      h2{
+        font-weight: bold;
+        text-align: center;
+      }
+
+      p{
+        font-size: 1.3em;
+        margin-bottom: -.5em;
+        margin-left: 3em;
+        margin-right: 3em; 
+      }
+
+      ion-range{
+        margin-left: 3em;
+        margin-right: 3em; 
+      }
+
+      button{
+        padding: 1em 2em;
+        border-radius: 5em;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #confirmar{
+        background: #36E12E;
+      }
     }
 }

@@ -7,4 +7,39 @@
 
     <img (click)="config()" id="icon-config" src="../../assets/imgs/config.png">
   </div>
+
+  <div id="fazerPedido" #fazerPedido>
+    <h2>Realizar Pedido?</h2>
+    <p id="distancia"></p>
+    <p id="tempo"></p>
+    <p id="preco"></p>
+
+    <button id="aceitar" (click)="envia()">Aceitar</button>
+    <button id="cancelar" (click)="cancela()">Cancelar</button>
+  </div>
+
+  <div id="aguardando" #aguardando>
+    <h3>Só um minuto, aguardando resposta do motorista...</h3>
+    <button id="cancelarAguardando" (click)="cancelarAguardando()">Cancelar</button>
+  </div>
+  
+  <div id="motoristaAceitou" #motoristaAceitou>
+    <h2>Corrida Aceita, aguarde no local</h2>
+    <h3>Informações do Motorista</h3>
+    <p id="nomeMotorista"></p>
+    <p id="corMoto"></p>
+    <p id="placaMoto"></p>
+
+    <!-- Este botão ainda não tem funcionalidade. A ideia é que quando clicado, uma página com mais informações do motorista seja exibida na tela -->
+    <button id="verMais" (click)="verMais()">Ver Mais</button>
+    <button id="cancelarCorrida" (click)="cancelarCorrida()">Cancelar</button>
+  </div>
+
+  <div id="corridaFinalizada" #corridaFinalizada>
+    <h2>Corrida Finalizada</h2>
+    <p>Para que a gente possa oferecer sempre bons serviços, de 0 a 10, qual nota você daria para o motorista?</p>
+    <p>Observação: a sua resposta é altamente secreta, ninguém terá acesso a ela, pode ficar tranquilo!</p>
+    <ion-range id="dual-range" min="0" max="10" step="1" dual-knobs pin color="dark"></ion-range>
+    <button id="confirmar" (click)="confirmar()">Confirmar</button>
+  </div>
 </ion-content>
