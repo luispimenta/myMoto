@@ -566,4 +566,11 @@ export class HomePage {
     this.campoDestino.nativeElement.value = '';
     this.db.database.ref('/pedidos').child(this.uid).remove();
   }
+
+  // Função para que o usuário saia da sua conta
+  logout() {
+    return this.afAuth.auth.signOut().then(() => {
+      this.navCtrl.setRoot(LoginPage);
+    }).catch((error) => console.log(error));
+  }
 }

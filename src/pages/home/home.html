@@ -5,7 +5,20 @@
     <input class="ion-input" #campoOrigem placeholder="Você está aqui!" />
     <input class="ion-input" #campoDestino placeholder="Para onde deseja ir?" />
 
-    <img (click)="config()" id="icon-config" src="../../assets/imgs/config.png">
+    <!-- <img (click)="config()" id="icon-config" src="../../assets/imgs/config.png"> -->
+    <ion-fab right>
+      <button class="buttonConfig" ion-fab mini>
+        <ion-icon name="settings"></ion-icon>
+      </button>
+      <ion-fab-list side="bottom">
+        <button ion-fab>
+          <ion-icon name="md-person"></ion-icon>
+        </button>
+        <button (click)="logout()" ion-fab>
+          <ion-icon name="md-log-out"></ion-icon>
+        </button>
+      </ion-fab-list>
+    </ion-fab>
   </div>
 
   <div id="fazerPedido" #fazerPedido>
