@@ -16,7 +16,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 // Páginas
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from './../pages/home/home';
-import { ConfigPage } from './../pages/config/config';
+import { PerfilPage } from './../pages/perfil/perfil';
 
 
 @NgModule({
@@ -24,7 +24,7 @@ import { ConfigPage } from './../pages/config/config';
     MyApp,
     LoginPage,
     HomePage,
-    ConfigPage
+    PerfilPage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +38,7 @@ import { ConfigPage } from './../pages/config/config';
     MyApp,
     LoginPage,
     HomePage,
-    ConfigPage
+    PerfilPage
   ],
   providers: [
     StatusBar,

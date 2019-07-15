@@ -6,7 +6,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 // Páginas
 import { LoginPage } from '../../pages/login/login';
-import { ConfigPage } from './../config/config';
+import { PerfilPage } from './../perfil/perfil';
 
 declare var google;
 
@@ -459,12 +459,6 @@ export class HomePage {
     });
   }
 
-  
-
-  config(){
-    this.navCtrl.push(ConfigPage);
-  }
-
   // Funções que escondem exibição de divs
   escondeFazerPedido(){
     document.getElementById('fazerPedido').style.display = "none";
@@ -567,6 +561,10 @@ export class HomePage {
     this.db.database.ref('/pedidos').child(this.uid).remove();
   }
 
+  // Função que redireciona para a página de perfil
+  perfil(){
+    this.navCtrl.push(PerfilPage);
+  }
   // Função para que o usuário saia da sua conta
   logout() {
     return this.afAuth.auth.signOut().then(() => {
