@@ -21,6 +21,7 @@
         background: #fbbd00;
         margin: .2em .5em;
         border: none;
+        border-radius: 5em;
 
         &::placeholder {
           font-weight: bold;
@@ -128,7 +129,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 20em;
+      height: 30em;
       background: #fbbd00;
       color: white;
 
