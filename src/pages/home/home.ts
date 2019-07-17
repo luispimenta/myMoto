@@ -7,6 +7,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 // Páginas
 import { LoginPage } from '../../pages/login/login';
 import { PerfilPage } from './../perfil/perfil';
+import { MotoristaPage } from './../motorista/motorista';
 
 declare var google;
 
@@ -588,6 +589,12 @@ export class HomePage {
   perfil(){
     this.navCtrl.push(PerfilPage);
   }
+
+  // Função que redireciona para a página com mais informações sobre o motorista
+  verMais(){
+    this.navCtrl.push(MotoristaPage);
+  }
+
   // Função para que o usuário saia da sua conta
   logout() {
     return this.afAuth.auth.signOut().then(() => {

@@ -17,14 +17,15 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from './../pages/home/home';
 import { PerfilPage } from './../pages/perfil/perfil';
-
+import { MotoristaPage } from './../pages/motorista/motorista';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HomePage,
-    PerfilPage
+    PerfilPage,
+    MotoristaPage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,8 @@ import { PerfilPage } from './../pages/perfil/perfil';
     MyApp,
     LoginPage,
     HomePage,
-    PerfilPage
+    PerfilPage,
+    MotoristaPage
   ],
   providers: [
     StatusBar,
