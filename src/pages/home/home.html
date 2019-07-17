@@ -52,7 +52,7 @@
     <h2>Corrida Finalizada</h2>
     <p>Para que a gente possa oferecer sempre bons serviços, de 0 a 10, qual nota você daria para o motorista?</p>
     <p>Observação: a sua resposta é altamente secreta, ninguém terá acesso a ela, pode ficar tranquilo!</p>
-    <ion-range id="dual-range" min="0" max="10" step="1" dual-knobs pin color="dark"></ion-range>
+    <ion-range id="dual-range" type="number" min="0" max="10" step="1" dual-knobs pin color="dark" [(ngModel)]="valorAvaliacaoInput"></ion-range>
     <button id="confirmar" (click)="confirmar()">Confirmar</button>
   </div>
 </ion-content>

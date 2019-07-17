@@ -38,6 +38,7 @@ export class HomePage {
   pegarDestino: any;
   item: any;
   preco: any;
+  valorAvaliacaoInput;
 
   constructor(
     public navCtrl: NavController,
@@ -555,6 +556,28 @@ export class HomePage {
 
   // confirmar() é um botão do corridaFinalizada. Chamada quando a corrida acaba e o usuário dá uma nota para o motorista
   confirmar(){
+    let corrida;
+    let motorista;
+    let avaliacao;
+
+    let userDB = this.db.database.ref('pedidos').child(this.uid);
+    userDB.once('value', (data) => {
+      let dados = data.val();
+      motorista = dados.motorista;
+    });
+
+    let listDB = this.db.database.ref('motoristas').child(motorista);
+    listDB.once('value', (data) => {
+      let dados = data.val();
+      corrida = dados.corridas+1;
+      dados.avaliacao = this.valorAvaliacaoInput;
+      avaliacao = dados.avaliacao;
+      listDB.update({
+        corridas: corrida,
+        avaliacao: avaliacao
+      });
+    });
+
     this.escondeCorridaFinalizada();
     this.directionsDisplay.set('directions', null);
     this.campoDestino.nativeElement.value = '';
