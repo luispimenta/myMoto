@@ -16,7 +16,7 @@
 
 // Gif e degradê ao fundo das telas de login a register
 .background{
-	background: linear-gradient(to top, rgba(0, 0, 0,.8), rgba(0, 0, 0, .7), rgba(0, 0, 0, .6), rgba(0, 0, 0, .5)), url('../../assets/gif/mulher-moto.gif');
+	background: linear-gradient(to right top, rgba(0,168,197,.6), rgba(0,197,195,.6), rgba(89,222,174,.6), rgba(170,243,146,.6), rgba(255,255,126,.6)), url('../../assets/imgs/caronaMenor.jpg');
 	width: 100vw;
 	height: 100vh;
     background-size: cover;
@@ -64,6 +64,9 @@
 .amarelo{
 	color: $amarelo;
 }
+.azul{
+	color: #00A8C5;
+}
 .azul-escuro{
 	color: $azul-escuro;
 }
@@ -97,7 +100,7 @@ ion-input{
 }
 
 ::placeholder{
-	color: white;
+	color: white !important;
 }
 
 // Logo ao topo da tela
