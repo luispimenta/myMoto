@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -48,8 +48,7 @@ export class HomePage {
     private toast: ToastController,
     private db: AngularFireDatabase,
     private geolocation: Geolocation,
-    public alertCtrl: AlertController,
-    public actionSheetCtrl: ActionSheetController
+    public alertCtrl: AlertController
   ) {}
 
   ionViewDidLoad() {
