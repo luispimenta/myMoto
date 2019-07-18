@@ -18,7 +18,8 @@
         width: 100%;
         font-size: 15px;
         padding: 15px;
-        background: #fbbd00;
+        // background: #fbbd00;
+        background: #00A8C5;
         margin: .2em .5em;
         border: none;
         border-radius: 5em;
@@ -44,7 +45,9 @@
       right: 0;
       bottom: 0;
       height: 15em;
-      background: #fbbd00;
+      // background: #00A8C5;
+      background: linear-gradient(to right top, rgb(0,168,197), rgb(0,197,195), rgb(89,222,174), rgb(170,243,146), rgb(255,255,126));
+      // background: #fbbd00;
       text-align: center;
       color: white;
 
@@ -61,10 +64,11 @@
       }
 
       #aceitar{
-        background: #36E12E;
+        // background: #36E12E;
+        background: #4BE360;
       }
       #cancelar{
-        background: #EB3633;
+        background: #FF5561;
       }
     }
 
@@ -75,7 +79,8 @@
       right: 0;
       bottom: 0;
       height: 10em;
-      background: #fbbd00;
+      background: linear-gradient(to right top, rgb(0,168,197), rgb(0,197,195), rgb(89,222,174), rgb(170,243,146), rgb(255,255,126));
+      // background: #fbbd00;
       text-align: center;
       color: white;
 
@@ -88,7 +93,7 @@
       }
 
       #cancelarAguardando{
-        background: #EB3633;
+        background: #FF5561;
       }
     }
 
@@ -99,7 +104,8 @@
       right: 0;
       bottom: 0;
       height: 20em;
-      background: #fbbd00;
+      // background: #fbbd00;
+      background: linear-gradient(to right top, rgb(0,168,197), rgb(0,197,195), rgb(89,222,174), rgb(170,243,146), rgb(255,255,126));
       text-align: center;
       color: white;
 
@@ -116,10 +122,10 @@
       }
 
       #verMais{
-        background: #36E12E;
+        background: #4BE360;
       }
       #cancelarCorrida{
-        background: #EB3633;
+        background: #FF5561;
       }
     }
 
@@ -130,7 +136,8 @@
       right: 0;
       bottom: 0;
       height: 28em;
-      background: #fbbd00;
+      // background: #fbbd00;
+      background: linear-gradient(to right top, rgb(0,168,197), rgb(0,197,195), rgb(89,222,174), rgb(170,243,146), rgb(255,255,126));
       color: white;
 
       h2{
@@ -162,7 +169,7 @@
       }
 
       #confirmar{
-        background: #36E12E;
+        background: #4BE360;
       }
     }
 
@@ -171,6 +178,6 @@
     }
 
     .buttonConfig{
-      background: #fbbd00;
+      background: #00A8C5;
     }
 }
