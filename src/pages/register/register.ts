@@ -96,9 +96,4 @@ export class RegisterPage {
   Login(){
     this.navCtrl.pop();
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
-  }
-
 }

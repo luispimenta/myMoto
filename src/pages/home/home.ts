@@ -92,7 +92,7 @@ export class HomePage {
       mapTypeControl: false,
       zoom: 17,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: true,
+      disableDefaultUI: true
     }
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     this.directionsDisplay.setMap(this.map);
@@ -366,6 +366,10 @@ export class HomePage {
     this.directionsDisplay.set('directions', null);
     this.campoDestino.nativeElement.value = '';
     this.db.database.ref('/pedidos').child(this.uid).remove();
+
+    // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
+    // Verificar se isso não faz um mapa ser exibido na frente do outro
+    this.initializeGoogleMaps();
   }
 
   // Função que redireciona para a página de perfil
@@ -374,8 +378,10 @@ export class HomePage {
   }
 
   // Função que redireciona para a página com mais informações sobre o motorista
-  verMais(){
-    this.navCtrl.push(MotoristaPage);
+  verMais(event, exibeUser){
+    this.navCtrl.push(MotoristaPage,{
+      item: this.uid
+    });
   }
 
   // Função para que o usuário saia da sua conta
