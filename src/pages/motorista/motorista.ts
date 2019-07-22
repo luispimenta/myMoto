@@ -11,6 +11,7 @@ export class MotoristaPage {
 
   // variáveis
   uid: string;
+  element: HTMLImageElement;
 
   constructor(
     public navCtrl: NavController,
@@ -32,10 +33,45 @@ export class MotoristaPage {
         let dadosMotorista = this.db.database.ref('motoristas').child(value.motorista);
         dadosMotorista.once('value', (data) => {
           let motorista = data.val();
-          document.getElementById('nome').innerText = `Nome: ${motorista.nome}`;
-          document.getElementById('avaliacao').innerText = `Avaliação: ${motorista.avaliacao}`;
-          document.getElementById('numeroCorridas').innerText = `Total de corridas: ${motorista.corridas}`;
+
+          this.imgMotorista(motorista);
+          this.nomeMotorista(motorista);
+          this.avaliacaoMotorista(motorista);
+          this.corridasMotorista(motorista);
         });
       });
+    }
+
+    imgMotorista(motorista){
+      // Verifica se o motorista já tem uma foto de perfil ou não
+      if(motorista.perfil == ""){
+        this.element = document.createElement("img");
+        this.element.className = 'imgTeste';
+        this.element.src = "../../assets/imgs/defautProfile.png";
+        document.getElementById('imagem').appendChild(this.element);
+      }
+      else{
+        this.element = document.createElement("img");
+        this.element.className = 'imgTeste';
+        this.element.src = motorista.perfil;
+        document.getElementById('imagem').appendChild(this.element);
+      }
+    }
+
+    nomeMotorista(motorista){
+      document.getElementById('nome').innerText = `Nome: ${motorista.nome}`;
+    }
+
+    avaliacaoMotorista(motorista){
+      if(motorista.avaliacao == ""){
+        document.getElementById('avaliacao').innerText = `Avaliação: Ainda sem avaliações`;
+      }
+      else{
+        document.getElementById('avaliacao').innerText = `Avaliação: ${motorista.avaliacao}`;
+      }
+    }
+
+    corridasMotorista(motorista){
+      document.getElementById('numeroCorridas').innerText = `Total de corridas: ${motorista.corridas}`;
     }
 }
