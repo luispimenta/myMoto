@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController, AlertController} 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 // Páginas
 import { LoginPage } from '../../pages/login/login';
@@ -48,10 +49,12 @@ export class HomePage {
     private toast: ToastController,
     private db: AngularFireDatabase,
     private geolocation: Geolocation,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private locationAccuracy: LocationAccuracy
   ) {}
 
   ionViewDidLoad() {
+    this.gpsState();
     this.exibeUser();
     this.initializeGoogleMaps();
     this.escondeFazerPedido();
@@ -78,6 +81,18 @@ export class HomePage {
 
       } else {
         this.navCtrl.setRoot(LoginPage);
+      }
+    });
+  }
+
+  gpsState(){
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if(canRequest) {
+        // the accuracy option will be ignored by iOS
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => alert('GPS ativado'),
+          error => alert('Erro na ativação do GPS')
+        );
       }
     });
   }
