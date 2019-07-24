@@ -40,7 +40,7 @@ export class HomePage {
   pegarDestino: any;
   item: any;
   preco: any;
-  valorAvaliacaoInput;
+  valorAvaliacaoInput: number;
 
   constructor(
     public navCtrl: NavController,
@@ -357,7 +357,7 @@ export class HomePage {
   confirmar(){
     let corrida;
     let motorista;
-    let avaliacao;
+    let avaliacao: number;
 
     let userDB = this.db.database.ref('pedidos').child(this.uid);
     userDB.once('value', (data) => {
@@ -368,9 +368,8 @@ export class HomePage {
     let listDB = this.db.database.ref('motoristas').child(motorista);
     listDB.once('value', (data) => {
       let dados = data.val();
-      corrida = dados.corridas+1;
-      dados.avaliacao = this.valorAvaliacaoInput;
-      avaliacao = dados.avaliacao;
+      corrida = dados.corridas+1; 
+      avaliacao = dados.avaliacao + this.valorAvaliacaoInput;
       listDB.update({
         corridas: corrida,
         avaliacao: avaliacao
@@ -380,7 +379,7 @@ export class HomePage {
     this.escondeCorridaFinalizada();
     this.directionsDisplay.set('directions', null);
     this.campoDestino.nativeElement.value = '';
-    this.db.database.ref('/pedidos').child(this.uid).remove();
+    this.db.database.ref('/pedidos').child(this.uid).remove(); 
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
     // Verificar se isso não faz um mapa ser exibido na frente do outro
