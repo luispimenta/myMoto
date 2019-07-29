@@ -1,3 +1,59 @@
 page-register {
+	// imagem e degradê ao fundo
+	.background{
+		background: linear-gradient(to right top, rgba(155,225,93,.7),rgba(129,227,114,.7), rgba(101,228,134,.7), rgba(67,228,154,.7), rgba(0,227,174,.7)), url('../../assets/imgs/caronaMenor.jpg');
+		width: 100vw;
+		height: 100vh;
+		background-size: cover;
+		background-position: center;
+	}
 
+	.degrade{
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Logo ao topo da tela
+	.logo{
+		width: 50%;
+		margin-top: 15%;
+	}
+
+	// Configurações dos inputs
+	ion-input{
+		margin-top: 15px;
+		color: white;
+
+		::placeholder{
+			color: white !important;
+		}
+	}
+
+	// Configurações do botão de cadastro
+	.btnCadastrar{
+		padding: 15px;
+		font-size:20px;
+		background: white;
+		border-radius: 100px;
+		margin-top: 20%;
+		color: #9BE15D;
+	}
+
+	// Link para a página de Login
+	.linkLogin{
+		font-size: 18px;
+		color: white;
+		margin-top: 20px;
+	}
+
+	// Peso da fonte
+	.bold{
+		font-weight: 700;
+	}
+	// Cores
+	.transparent{
+		background: transparent;
+	}
 }

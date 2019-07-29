@@ -1,11 +1,11 @@
 <ion-content class="background">
   <div class="degrade">
-    <div class="conteudo" padding>
-      <div class="center">
+    <div padding>
+      <div text-center>
         <img src="./assets/imgs/logo.png" class="logo">
       </div>
 
-      <ion-list inset>
+      <div class="form">
         <ion-item class="transparent bold">
           <ion-input type="text" [(ngModel)]="nome" placeholder="Nome"></ion-input>
         </ion-item>
@@ -21,15 +21,11 @@
         <ion-item class="transparent bold">
           <ion-input type="password" [(ngModel)]="confirm_pass" placeholder="Confirmar Senha"></ion-input>
         </ion-item>
-      </ion-list>
+      </div>
 
       <div text-center>
-        <div (click)="register(user)" class="center btn bold azul">
-          Cadastrar
-        </div>
-        <div (click)="Login()" class="center bold mg-top-20 link">
-          Login
-        </div>
+        <div (click)="register(user)" class="btnCadastrar bold" text-center>Cadastrar</div>
+        <div (click)="Login()" class="linkLogin bold" text-center>Login</div>
       </div>
     </div>
   </div>

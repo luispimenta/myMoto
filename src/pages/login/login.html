@@ -1,10 +1,11 @@
 <ion-content class="background">
   <div class="degrade">
-    <div class="conteudo" padding>
-      <div class="center">
+    <div padding>
+      <div text-center>
         <img src="./assets/imgs/logo.png" class="logo">
       </div>
-      <ion-list inset>
+
+      <div class="form">
         <ion-item class="transparent bold">
           <ion-input type="text" [(ngModel)]="user.email" placeholder="E-mail"></ion-input>
         </ion-item>
@@ -12,18 +13,13 @@
         <ion-item class="transparent bold">
           <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
         </ion-item>
-      </ion-list>
-
-      <div (click)="esqueceuSenha()">
-        Esqueceu sua senha?
       </div>
+
+      <div (click)="esqueceuSenha()" class="esqueceuSenha">Esqueceu sua senha?</div>
+
       <div text-center>
-        <div (click)="login(user)" class="center btn bold azul">
-          Entrar
-        </div>
-        <div (click)="register()" class="center bold mg-top-20 link">
-          Cadastrar
-        </div>
+        <div (click)="login(user)" class="btnLogin bold" text-center>Entrar</div>
+        <div (click)="register()" class="linkCadastrar bold" text-center>Cadastrar</div>
       </div>
     </div>
   </div>
