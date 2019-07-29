@@ -386,11 +386,6 @@ export class HomePage {
     this.initializeGoogleMaps();
   }
 
-  // Função que redireciona para a página de perfil
-  perfil(){
-    this.navCtrl.push(PerfilPage);
-  }
-
   // Função que redireciona para a página com mais informações sobre o motorista
   verMais(event, exibeUser){
     this.navCtrl.push(MotoristaPage,{
