@@ -13,6 +13,10 @@
           <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
         </ion-item>
       </ion-list>
+
+      <div (click)="esqueceuSenha()">
+        Esqueceu sua senha?
+      </div>
       <div text-center>
         <div (click)="login(user)" class="center btn bold azul">
           Entrar
