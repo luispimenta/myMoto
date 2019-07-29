@@ -17,7 +17,6 @@ import { Geolocation } from '@ionic-native/geolocation';
 // Páginas
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from './../pages/home/home';
-import { PerfilPage } from './../pages/perfil/perfil';
 import { MotoristaPage } from './../pages/motorista/motorista';
 
 @NgModule({
@@ -25,7 +24,6 @@ import { MotoristaPage } from './../pages/motorista/motorista';
     MyApp,
     LoginPage,
     HomePage,
-    PerfilPage,
     MotoristaPage
   ],
   imports: [
@@ -40,7 +38,6 @@ import { MotoristaPage } from './../pages/motorista/motorista';
     MyApp,
     LoginPage,
     HomePage,
-    PerfilPage,
     MotoristaPage
   ],
   providers: [

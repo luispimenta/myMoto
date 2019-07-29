@@ -7,7 +7,6 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 // Páginas
 import { LoginPage } from '../../pages/login/login';
-import { PerfilPage } from './../perfil/perfil';
 import { MotoristaPage } from './../motorista/motorista';
 
 declare var google;
