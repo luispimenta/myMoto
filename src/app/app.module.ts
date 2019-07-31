@@ -15,14 +15,18 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Geolocation } from '@ionic-native/geolocation';
 
 // Páginas
+import { InitializePage } from './../pages/initialize/initialize';
 import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from './../pages/register/register';
 import { HomePage } from './../pages/home/home';
 import { MotoristaPage } from './../pages/motorista/motorista';
 
 @NgModule({
   declarations: [
     MyApp,
+    InitializePage,
     LoginPage,
+    RegisterPage,
     HomePage,
     MotoristaPage
   ],
@@ -36,7 +40,9 @@ import { MotoristaPage } from './../pages/motorista/motorista';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    InitializePage,
     LoginPage,
+    RegisterPage,
     HomePage,
     MotoristaPage
   ],

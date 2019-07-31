@@ -7,19 +7,21 @@
 
       <div class="form">
         <ion-item class="transparent bold">
-          <ion-input type="text" [(ngModel)]="user.email" placeholder="E-mail"></ion-input>
+          <ion-input type="text" [(ngModel)]="user.email" placeholder="E-Mail" text-center></ion-input>
         </ion-item>
 
         <ion-item class="transparent bold">
-          <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
+          <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha" text-center></ion-input>
         </ion-item>
       </div>
 
-      <div (click)="esqueceuSenha()" class="esqueceuSenha">Esqueceu sua senha?</div>
-
       <div text-center>
         <div (click)="login(user)" class="btnLogin bold" text-center>Entrar</div>
-        <div (click)="register()" class="linkCadastrar bold" text-center>Cadastrar</div>
+        <div (click)="esqueceuSenha()" class="esqueceuSenha" text-center>Esqueceu sua senha?</div>
+      </div>
+
+      <div text-center>
+          <div (click)="register()" class="linkCadastrar" text-center>Cadastre-se</div>
       </div>
     </div>
   </div>

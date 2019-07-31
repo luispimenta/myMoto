@@ -4,6 +4,7 @@ import { User } from '../../Models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { HomePage } from './../home/home';
+import { RegisterPage } from './../register/register';
 
 @IonicPage()
 @Component({
@@ -93,7 +94,7 @@ export class LoginPage {
               let email = data.email;
               this.afAuth.auth.sendPasswordResetEmail(email).then((data) =>{
                 this.toast.create({
-                  message: 'Enviamos um e-amail para '+email+', clique no link do E-mail para redefinir sua senha',
+                  message: 'Enviamos um E-mail para '+email+', clique no link do E-mail para redefinir sua senha',
                   showCloseButton: true
                 }).present();
               })
@@ -106,6 +107,6 @@ export class LoginPage {
   }
 
   register() {
-    this.navCtrl.push('RegisterPage');
+    this.navCtrl.setRoot(RegisterPage);
   }
 }

@@ -1,0 +1,57 @@
+page-initialize {
+    .background {
+        background: linear-gradient(315deg, rgba(83, 120, 149, .8) 0%, rgba(9, 32, 63, .8) 74%), url('../../assets/imgs/caronaMenor.jpg');
+        width: 100vw;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .degrade {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    // Logo ao topo da tela
+    .logo {
+        width: 50%;
+        margin-top: 15%;
+    }
+
+    .conteudo{
+        padding: 5em;
+    }
+
+    h2{
+        font-size: 18px;
+        font-weight: 400;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        color: white
+    }
+
+    // Botões
+    .btnLogin{
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+        border: 1px solid white;
+        border-radius: 100px;
+        margin-top: 20%;
+        margin-bottom: .5em;
+        color: white;
+    }
+
+    .btnCadastrar{
+        padding: 15px;
+        font-size: 20px;
+        font-weight: 400;
+        border: 1px solid white;
+        border-radius: 100px;
+        background: white;
+        color:  #537895;
+    }
+}

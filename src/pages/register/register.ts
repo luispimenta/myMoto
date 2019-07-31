@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, AlertController, ToastController} 
 import { User } from '../../Models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { LoginPage } from './../login/login';
+
 @IonicPage()
 @Component({
   selector: 'page-register',
@@ -94,6 +96,6 @@ export class RegisterPage {
   }
 
   Login(){
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(LoginPage);
   }
 }
