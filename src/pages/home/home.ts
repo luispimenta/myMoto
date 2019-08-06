@@ -340,16 +340,35 @@ export class HomePage {
 
   // cancelarCorrida() é um botão do motoristaAceitou. Chamada quando o usuário decide cancelar a corrida quando o motorista já aceitou e está a caminho
   cancelarCorrida(){
-    this.escondeMotoristaAceitou();
+    const alert = this.alertCtrl.create({
+      title: 'Tem certeza que deseja cancelar a corrida?',
+      buttons: [
+        {
+          text: 'Sim',
+          role: 'cancel',
+          handler: () => {
+            this.escondeMotoristaAceitou();
 
-    let cancelar = this.alertCtrl.create({
-      title: 'Corrida cancelada com sucesso',
+            let cancelar = this.alertCtrl.create({
+              title: 'Corrida cancelada com sucesso',
+            });
+            cancelar.present();
+
+            this.db.database.ref('/pedidos').child(this.uid).remove();
+            this.directionsDisplay.set('directions', null);
+            this.campoDestino.nativeElement.value = '';
+          }
+        }, {
+          text: 'Não',
+          handler: () => {
+            
+          }
+        }
+      ]
     });
-    cancelar.present();
 
-    this.db.database.ref('/pedidos').child(this.uid).remove();
-    this.directionsDisplay.set('directions', null);
-    this.campoDestino.nativeElement.value = '';
+    alert.present();
+    
   }
 
   // confirmar() é um botão do corridaFinalizada. Chamada quando a corrida acaba e o usuário dá uma nota para o motorista
