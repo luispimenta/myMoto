@@ -98,7 +98,12 @@ export class HomePage {
 
   initializeGoogleMaps() {
     this.directionsService = new google.maps.DirectionsService();
-    this.directionsDisplay = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: "#2EC4B6"  } });
+    this.directionsDisplay = new google.maps.DirectionsRenderer({ 
+      polylineOptions: { 
+        strokeColor: "#2EC4B6",
+        strokeWeight: 5
+      } 
+    });
 
     let latLng = new google.maps.LatLng(-23.9793, -48.8769);
     let mapOptions = {
