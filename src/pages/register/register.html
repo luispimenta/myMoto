@@ -6,25 +6,17 @@
       </div>
 
       <div class="form">
-        <ion-item class="transparent bold">
-          <ion-input type="text" [(ngModel)]="nome" placeholder="Nome"></ion-input>
-        </ion-item>
+        <ion-input type="text" [(ngModel)]="nome" placeholder="Nome"></ion-input>
 
-        <ion-item class="transparent bold">
-          <ion-input type="text" [(ngModel)]="user.email" placeholder="Email"></ion-input>
-        </ion-item>
+        <ion-input type="text" [(ngModel)]="user.email" placeholder="Email"></ion-input>
 
-        <ion-item class="transparent bold">
-          <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
-        </ion-item>
+        <ion-input type="password" [(ngModel)]="user.password" placeholder="Senha"></ion-input>
 
-        <ion-item class="transparent bold">
-          <ion-input type="password" [(ngModel)]="confirm_pass" placeholder="Confirmar Senha"></ion-input>
-        </ion-item>
+        <ion-input type="password" [(ngModel)]="confirm_pass" placeholder="Confirmar Senha"></ion-input>
       </div>
 
       <div text-center>
-        <div (click)="register(user)" class="btnCadastrar bold" text-center>Cadastrar</div>
+        <div (click)="register(user)" class="btnCadastrar" text-center>Cadastrar</div>
         <div (click)="Login()" class="linkLogin" text-center>Entrar</div>
       </div>
     </div>
