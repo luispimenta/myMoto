@@ -1,6 +1,13 @@
 page-motorista {
+
+    #content{
+        background: linear-gradient(315deg, #537895 0%, #09203f 74%);
+    }
+
     .imgTeste{
-        width: 100vw;
-        height: 50vh;
+        width: 80vw;
+        height: 80vh;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

@@ -53,13 +53,13 @@ export class HomePage {
   ) {}
 
   ionViewDidLoad() {
-    this.gpsState();
-    this.exibeUser();
-    this.initializeGoogleMaps();
-    this.escondeFazerPedido();
-    this.escondeAguardando();
-    this.escondeMotoristaAceitou();
-    this.escondeCorridaFinalizada();
+      this.gpsState();
+      this.exibeUser();
+      this.initializeGoogleMaps();
+      this.escondeFazerPedido();
+      this.escondeAguardando();
+      this.escondeMotoristaAceitou();
+      this.escondeCorridaFinalizada();
   }
 
   exibeUser() {

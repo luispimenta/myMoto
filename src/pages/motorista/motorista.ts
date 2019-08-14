@@ -59,19 +59,19 @@ export class MotoristaPage {
     }
 
     nomeMotorista(motorista){
-      document.getElementById('nome').innerText = `Nome: ${motorista.nome}`;
+      document.getElementById('nome').innerText = motorista.nome;
     }
 
     avaliacaoMotorista(motorista){
       if(motorista.avaliacao == ""){
-        document.getElementById('avaliacao').innerText = `Avaliação: Ainda sem avaliações`;
+        document.getElementById('avaliacao').innerText = 'Ainda sem avaliações';
       }
       else{
-        document.getElementById('avaliacao').innerText = `Avaliação: ${motorista.avaliacao}`;
+        document.getElementById('avaliacao').innerText = motorista.avaliacao;
       }
     }
 
     corridasMotorista(motorista){
-      document.getElementById('numeroCorridas').innerText = `Total de corridas: ${motorista.corridas}`;
+      document.getElementById('numeroCorridas').innerText = motorista.corridas;
     }
 }
