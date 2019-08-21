@@ -1,13 +1,62 @@
 page-motorista {
+    #topo{
+        background-color: #93a1f8;
+        height: 30vh;
+        padding: 10px;
+    }
 
-    #content{
-        background: linear-gradient(315deg, #537895 0%, #09203f 74%);
+    #voltar{
+        color: white;
+        font-size: 3em;
     }
 
     .imgTeste{
-        width: 80vw;
-        height: 80vh;
-        margin-left: auto;
+        width: 35%;
+        border-radius: 100%;
+        float: left;
+    }
+    .textos{
+        float: right;
+        font-size: 1.5em;
+        font-weight: 300;
+    }
+
+    .textos2{
+        font-size: 1.5em;
+        font-weight: 300;
+    }
+
+    h2{
+        font-weight: bold;
+    }
+
+    #infoMoto{
+        text-align: center;
+        width: 95%;
+        padding: 5px;
+        margin-top: -2em;
         margin-right: auto;
+        margin-left: auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 3px 3px 15px#C1C1C1;
+    }
+
+    #corridasRealizadas{
+        text-align: center;
+        width: 95%;
+        padding: 5px;
+        margin-top: 2em;
+        margin-right: auto;
+        margin-left: auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 3px 3px 15px#C1C1C1;
+    }
+
+    #numeroCorridas{
+        font-size: 5em;
+        margin-top: -5px;
+        margin-bottom: -5px;
     }
 }

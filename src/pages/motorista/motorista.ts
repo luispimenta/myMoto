@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { HomePage } from './../home/home';
 
 @IonicPage()
 @Component({
@@ -38,6 +39,8 @@ export class MotoristaPage {
           this.nomeMotorista(motorista);
           this.avaliacaoMotorista(motorista);
           this.corridasMotorista(motorista);
+          this.corMoto(motorista);
+          this.placaMoto(motorista);
         });
       });
     }
@@ -73,5 +76,17 @@ export class MotoristaPage {
 
     corridasMotorista(motorista){
       document.getElementById('numeroCorridas').innerText = motorista.corridas;
+    }
+
+    corMoto(motorista){
+      document.getElementById('cor').innerText = `Cor: ${motorista.cor}`;
+    }
+
+    placaMoto(motorista){
+      document.getElementById('placa').innerText = `Placa: ${motorista.placa}`;
+    }
+
+    voltar(){
+      this.navCtrl.setRoot(HomePage);
     }
 }

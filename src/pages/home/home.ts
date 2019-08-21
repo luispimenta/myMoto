@@ -53,7 +53,7 @@ export class HomePage {
   ) {}
 
   ionViewDidLoad() {
-      this.gpsState();
+      // this.gpsState();
       this.exibeUser();
       this.initializeGoogleMaps();
       this.escondeFazerPedido();

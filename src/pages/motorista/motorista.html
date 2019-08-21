@@ -1,26 +1,34 @@
-<ion-header>
+<!-- <ion-header>
   <ion-navbar>
-    <ion-title>motorista</ion-title>
+    <ion-title>Informações do motorista</ion-title>
   </ion-navbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
+
   <div id="content">
-    <div id="imagem"></div>
+    <div id="topo">
+        <ion-icon id="voltar" name="arrow-round-back" (click)="voltar()"></ion-icon>
 
-    <div>
-      <h2>Nome</h2>
-      <p id="nome"></p>
+        <div id="imagem">
+            <div class="textos">
+              <p id="nome"></p>
+              <p id="avaliacao"></p>
+            </div>
+        </div>
     </div>
 
-    <div>
-      <h2>Avaliação</h2>
-      <p id="avaliacao"></p>
-    </div>
-
-    <div>
-      <h2>Número de Corridas</h2>
-      <p id="numeroCorridas"></p>
+    <div id="infoMoto">
+        <h2>Informações da Moto</h2>
+        <div class="textos2">
+            <p id="cor"></p>
+            <p id="placa"></p>
+        </div>
+      </div>
+      
+    <div id="corridasRealizadas">
+      <h2>Corridas realizadas</h2>
+      <p class="textos2" id="numeroCorridas"></p>
     </div>
   </div>
 </ion-content>
