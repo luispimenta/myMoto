@@ -1,62 +1,91 @@
 page-motorista {
-    #topo{
-        background-color: #93a1f8;
-        height: 30vh;
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .containerHeader {
+        background-color: #AFB3FA;
+        height: 35vh;
+        padding: 5%;
+        display: flex;
+        align-items: center;
+    }
+
+    .boxInfo {
+        background-color: #FFF;
+        height: 20%;
+        width: 90%;
+        left: 5%;
+        text-align: center;
+        position: absolute;
+        top: 30%;
+        border-radius: 10px;
+        box-shadow: 3px 3px 15px #c1c1c1;
         padding: 10px;
     }
 
-    #voltar{
-        color: white;
-        font-size: 3em;
-    }
-
-    .imgTeste{
-        width: 35%;
-        border-radius: 100%;
-        float: left;
-    }
-    .textos{
-        float: right;
-        font-size: 1.5em;
-        font-weight: 300;
-    }
-
-    .textos2{
-        font-size: 1.5em;
-        font-weight: 300;
-    }
-
-    h2{
-        font-weight: bold;
-    }
-
-    #infoMoto{
+    .boxCorrida {
+        background-color: #FFF;
+        height: 20%;
+        width: 90%;
+        left: 5%;
         text-align: center;
-        width: 95%;
-        padding: 5px;
-        margin-top: -2em;
-        margin-right: auto;
-        margin-left: auto;
-        background: white;
+        position: absolute;
+        top: 55%;
         border-radius: 10px;
-        box-shadow: 3px 3px 15px#C1C1C1;
+        box-shadow: 3px 3px 15px #c1c1c1;
+        padding: 10px;
     }
 
-    #corridasRealizadas{
-        text-align: center;
-        width: 95%;
-        padding: 5px;
-        margin-top: 2em;
-        margin-right: auto;
-        margin-left: auto;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 3px 3px 15px#C1C1C1;
+    #textos {
+        color: #FFF;
+        margin-left: 20px;
+        font-size: 25px;
+        font-weight: 500;
     }
 
-    #numeroCorridas{
-        font-size: 5em;
-        margin-top: -5px;
-        margin-bottom: -5px;
+    #imagem {
+        width: 100px;
+
+        .imgTeste {
+            border-radius: 100%;
+        }
+    }
+
+    .botao-voltar {
+        color: #FFF;
+        left: 5%;
+        top: 2%;
+        position: absolute;
+        font-size: 30px;
+    }
+
+    .textInfo {
+        div {
+            justify-content: center;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    }
+
+    .textCorrida {
+        div {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 40px;
+        }
+    }
+
+    .displayFlex {
+        display: flex;
+
+        ion-icon {
+            margin-left: 10px;
+        }
+    }
+
+    .boldFont {
+        font-weight: 600;
     }
 }

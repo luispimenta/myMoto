@@ -15,9 +15,9 @@ export class MotoristaPage {
   element: HTMLImageElement;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    private db: AngularFireDatabase,
+    public navCtrl:       NavController,
+    public navParams:     NavParams,
+    private db:           AngularFireDatabase,
     ) {
       this.uid = navParams.get('item');
     }
@@ -79,11 +79,11 @@ export class MotoristaPage {
     }
 
     corMoto(motorista){
-      document.getElementById('cor').innerText = `Cor: ${motorista.cor}`;
+      document.getElementById('cor').innerText = `  ${motorista.cor}`;
     }
 
     placaMoto(motorista){
-      document.getElementById('placa').innerText = `Placa: ${motorista.placa}`;
+      document.getElementById('placa').innerText = `  ${motorista.placa}`;
     }
 
     voltar(){
