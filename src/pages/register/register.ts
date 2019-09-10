@@ -45,20 +45,19 @@ export class RegisterPage {
 
             this.db.database.ref(this.PATH).child(this.getId())
           .set({ 
-			  	name: this.nome,
-                }).then(
-            (error) => {
-              console.log(error)
-            });
+            name: this.nome,
+          }) .then((error) => {
+                console.log(error)
+              });
 
-            this.toast.create({
-              message: 'Cadastro finalizado!',
-              duration: 4000
-            }).present();
+              this.toast.create({
+                message: 'Cadastro finalizado!',
+                duration: 4000
+              }).present();
 
-            this.Login();
+              this.Login();
 
-          }).catch((error: any) =>{
+            }) .catch((error: any) =>{
 
             if(user.password.length < 6){
               this.toast.create({

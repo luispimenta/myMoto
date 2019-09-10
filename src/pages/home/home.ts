@@ -19,7 +19,7 @@ declare var google;
 export class HomePage {
 
   // variáveis usadas no login/cadastro
-  private PATH = 'usuarios/';
+  private PATH = 'usuarios';
   uid: string;
 
 
@@ -72,10 +72,6 @@ export class HomePage {
         let listDB = this.db.database.ref(this.PATH).child(this.uid);
         listDB.on('value', (snapshot) => {
           this.item = snapshot.val();
-          this.toast.create({
-            message: `Seja bem-vindo ` + this.item.name,
-            duration: 3000
-          }).present();
         })
 
       } else {
