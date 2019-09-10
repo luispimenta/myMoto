@@ -4,8 +4,14 @@ page-motorista {
         padding: 0;
     }
 
+    #fundo{
+        background-image: linear-gradient(37deg, rgba(153, 30, 61, .7), rgba(125, 38, 90, .7), rgba(84, 50, 103, .7), rgba(40, 55, 96, .7), rgba(9, 52, 76, .7));
+        height: 100vh;
+        width: 100vw;
+    }
+
     .containerHeader {
-        background-color: #AFB3FA;
+        // background-color:  rgb(9, 52, 76);
         height: 35vh;
         padding: 5%;
         display: flex;
@@ -13,6 +19,9 @@ page-motorista {
     }
 
     .boxInfo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: #FFF;
         height: 20%;
         width: 90%;
@@ -21,11 +30,14 @@ page-motorista {
         position: absolute;
         top: 30%;
         border-radius: 10px;
-        box-shadow: 3px 3px 15px #c1c1c1;
+        box-shadow: 1px 1px 3px #c1c1c1;
         padding: 10px;
     }
 
     .boxCorrida {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: #FFF;
         height: 20%;
         width: 90%;
@@ -34,7 +46,7 @@ page-motorista {
         position: absolute;
         top: 55%;
         border-radius: 10px;
-        box-shadow: 3px 3px 15px #c1c1c1;
+        box-shadow: 1px 1px 3px #c1c1c1;
         padding: 10px;
     }
 
@@ -49,7 +61,7 @@ page-motorista {
         width: 100px;
 
         .imgTeste {
-            border-radius: 100%;
+            border-radius: 1000%;
         }
     }
 

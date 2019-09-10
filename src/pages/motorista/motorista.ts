@@ -50,7 +50,7 @@ export class MotoristaPage {
       if(motorista.perfil == ""){
         this.element = document.createElement("img");
         this.element.className = 'imgTeste';
-        this.element.src = "../../assets/imgs/defautProfile.png";
+        this.element.src = "../../assets/imgs/default.png";
         document.getElementById('imagem').appendChild(this.element);
       }
       else{
