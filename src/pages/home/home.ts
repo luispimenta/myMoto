@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -17,35 +17,31 @@ declare var google;
   templateUrl: 'home.html',
 })
 export class HomePage {
-
-  // variáveis usadas no login/cadastro
   private PATH = 'usuarios';
   uid: string;
 
-
-  // variáveis utilizadas no mapa
+  // Fazem referência a elementos do HTML
   @ViewChild('map') mapElement: ElementRef;
-  @ViewChild('divDirections') divDirections: ElementRef;
-  @ViewChild('campoOrigem') campoOrigem: ElementRef;
-  @ViewChild('campoDestino') campoDestino: ElementRef;
+  @ViewChild('blockDirections') divDirections: ElementRef;
+  @ViewChild('inputOrigin') inputOrigin: ElementRef;
+  @ViewChild('inputDestination') inputDestino: ElementRef;
 
   map: any;
   directionsService: any;
   directionsDisplay: any;
-  markerOrigem: any;
+  markerOrigin: any;
   distanciaFixed: any;
   startPosition: any;
-  pegarOrigem: any;
-  pegarDestino: any;
+  getOriginUser: any;
+  getDestinationUser: any;
   item: any;
-  preco: any;
+  price: any;
   valorAvaliacaoInput: number;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
-    private toast: ToastController,
     private db: AngularFireDatabase,
     private geolocation: Geolocation,
     public alertCtrl: AlertController,
@@ -54,7 +50,7 @@ export class HomePage {
 
   ionViewDidLoad() {
       // this.gpsState();
-      this.exibeUser();
+      this.getUser();
       this.initializeGoogleMaps();
       this.escondeFazerPedido();
       this.escondeAguardando();
@@ -62,7 +58,21 @@ export class HomePage {
       this.escondeCorridaFinalizada();
   }
 
-  exibeUser() {
+  gpsState(){
+    this.locationAccuracy.canRequest()
+      .then((canRequest: boolean) => {
+        if(canRequest) {
+        // the accuracy option will be ignored by iOS
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
+          .then(() => alert('GPS ativado'),
+            error => alert('Erro na ativação do GPS')
+          );
+        }
+      });
+  }
+
+
+  getUser() {
     this.afAuth.authState.subscribe(data => {
       if (data && data.email && data.uid) {
         this.uid = data.uid;
@@ -72,35 +82,26 @@ export class HomePage {
         let listDB = this.db.database.ref(this.PATH).child(this.uid);
         listDB.on('value', (snapshot) => {
           this.item = snapshot.val();
-        })
+        });
 
-      } else {
+      } 
+      else {
         this.navCtrl.setRoot(LoginPage);
       }
     });
   }
 
-  gpsState(){
-    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      if(canRequest) {
-        // the accuracy option will be ignored by iOS
-        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-          () => alert('GPS ativado'),
-          error => alert('Erro na ativação do GPS')
-        );
-      }
-    });
-  }
 
   initializeGoogleMaps() {
     this.directionsService = new google.maps.DirectionsService();
     this.directionsDisplay = new google.maps.DirectionsRenderer({ 
       polylineOptions: { 
-        strokeColor: "#2EC4B6",
+        strokeColor: "#543267",
         strokeWeight: 5
       } 
     });
 
+    // Define Itapeva como o centro do mapa
     let latLng = new google.maps.LatLng(-23.9793, -48.8769);
     let mapOptions = {
       center: latLng,
@@ -115,11 +116,11 @@ export class HomePage {
     var self = this;
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.divDirections.nativeElement);
 
-    var autocompleteOrigem = new google.maps.places.Autocomplete(this.campoOrigem.nativeElement);
-    autocompleteOrigem.bindTo('bounds', this.map);
-    autocompleteOrigem.setFields(['address_components', 'geometry', 'icon', 'name']);
-    autocompleteOrigem.addListener('place_changed', function() {
-      var place = autocompleteOrigem.getPlace();
+    var autocompleteOrigin = new google.maps.places.Autocomplete(this.inputOrigin.nativeElement);
+    autocompleteOrigin.bindTo('bounds', this.map);
+    autocompleteOrigin.setFields(['address_components', 'geometry', 'icon', 'name']);
+    autocompleteOrigin.addListener('place_changed', function() {
+      var place = autocompleteOrigin.getPlace();
       if (!place.geometry) {
         window.alert("No details available for input: '" + place.name + "'");
         return;
@@ -128,7 +129,8 @@ export class HomePage {
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
         self.map.fitBounds(place.geometry.viewport);
-      } else {
+      } 
+      else {
         self.map.setCenter(place.geometry.location);
         self.map.setZoom(17);
       }
@@ -136,11 +138,11 @@ export class HomePage {
       self.addDirections();
     });
     
-    var autocompleteDestino = new google.maps.places.Autocomplete(this.campoDestino.nativeElement);
-    autocompleteDestino.bindTo('bounds', this.map);
-    autocompleteDestino.setFields(['address_components', 'geometry', 'icon', 'name']);
-    autocompleteDestino.addListener('place_changed', function() {
-      var place = autocompleteDestino.getPlace();
+    var autocompleteDestination = new google.maps.places.Autocomplete(this.inputDestino.nativeElement);
+    autocompleteDestination.bindTo('bounds', this.map);
+    autocompleteDestination.setFields(['address_components', 'geometry', 'icon', 'name']);
+    autocompleteDestination.addListener('place_changed', function() {
+      var place = autocompleteDestination.getPlace();
       if (!place.geometry) {
         window.alert("No details available for input: '" + place.name + "'");
         return;
@@ -149,7 +151,8 @@ export class HomePage {
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
         self.map.fitBounds(place.geometry.viewport);
-      } else {
+      } 
+      else {
         self.map.setCenter(place.geometry.location);
         self.map.setZoom(17);
       }
@@ -158,9 +161,10 @@ export class HomePage {
     });
 
     // Adicionando marcador de localização
-    this.markerOrigem = new google.maps.Marker({
+    this.markerOrigin = new google.maps.Marker({
       map: this.map,
-      anchorPoint: new google.maps.Point(0, -29)
+      anchorPoint: new google.maps.Point(0, -29),
+      // icon: '../../assets/imgs/destination.png'
     });
 
     this.pegaPosicao();
@@ -168,26 +172,35 @@ export class HomePage {
 
   pegaPosicao() {
     var self = this;
-    this.geolocation.getCurrentPosition({timeout: 15000, enableHighAccuracy: true, maximumAge: 75000})
+    this.geolocation.getCurrentPosition({
+      timeout: 15000,
+      enableHighAccuracy: true,
+      maximumAge: 75000
+    })
       .then((response) => {
         this.startPosition = response.coords;
 
         // Pego a lng e lat do usuário
-        this.pegarOrigem = new Array(this.startPosition.longitude, this.startPosition.latitude);
+        this.getOriginUser = new Array(this.startPosition.longitude, this.startPosition.latitude);
 
         // Deixando o centro do mapa na localização do usuário
         this.map.setCenter(new google.maps.LatLng(this.startPosition.latitude,this.startPosition.longitude))
 
         var geocoder = new google.maps.Geocoder;
-        geocoder.geocode({'location': { lat: this.startPosition.latitude, lng: this.startPosition.longitude } }, function(results, status) {
+        geocoder.geocode({
+          'location': { 
+            lat: this.startPosition.latitude, 
+            lng: this.startPosition.longitude
+          } 
+        }, function(results, status) {
           if (status === 'OK') {
             if (results[0]) {
-              self.campoOrigem.nativeElement.value = results[0].formatted_address;
+              self.inputOrigin.nativeElement.value = results[0].formatted_address;
             }
           }
         });
 
-        this.markerOrigem.setPosition(new google.maps.LatLng(this.startPosition.latitude,this.startPosition.longitude))
+        this.markerOrigin.setPosition(new google.maps.LatLng(this.startPosition.latitude,this.startPosition.longitude));
       })
       .catch((err) => {
         console.log(err.message);
@@ -195,31 +208,31 @@ export class HomePage {
       });
   }
 
-  // chamado para fazer o traçado entre os dois pontos
+  // É chamada para fazer o traçado entre a Origem e o Destino
   addDirections(){
     var self = this;
     var request = {
-      origin: this.campoOrigem.nativeElement.value,
-      destination: this.campoDestino.nativeElement.value,
+      origin: this.inputOrigin.nativeElement.value,
+      destination: this.inputDestino.nativeElement.value,
       travelMode: 'DRIVING'
     };
+
     this.directionsService.route(request, function(result, status) {
       if (status == 'OK') {
         self.directionsDisplay.setDirections(result);
-        self.markerOrigem.setVisible(false);
+        self.markerOrigin.setVisible(false);
 
-        // no resultado da consulta da rota ao google maps,
-        // seta o lat e lng do destino
-        self.pegarDestino = result.routes[0].legs[0].end_location;
-        self.pegarOrigem = result.routes[0].legs[0].start_location;
+        // No resultado da consulta da rota ao google maps, seta o lat e lng do destino
+        self.getDestinationUser = result.routes[0].legs[0].end_location;
+        self.getOriginUser = result.routes[0].legs[0].start_location;
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
         self.distanciaFixed = distancia.toFixed(2);
-        self.preco = (self.distanciaFixed * 3) + 4;
+        self.price = (self.distanciaFixed * 3) + 4;
         let tempo = result.routes[0].legs[0].duration.value/60;
 
         self.exibeFazerPedido();
-        self.divConfirmaCorrida(distancia, tempo, self.preco);
+        self.divConfirmaCorrida(distancia, tempo, self.price);
       }
     });
   }
@@ -307,13 +320,13 @@ export class HomePage {
     let self = this;
     this.db.database.ref('/pedidos').child(this.uid)
       .set({
-        destinoLng: `${this.pegarDestino.lng()}`,
-        destinoLat: `${this.pegarDestino.lat()}`,
-        origemLng: `${this.pegarOrigem.lng()}`,
-        origemLat: `${this.pegarOrigem.lat()}`,
+        destinoLng: `${this.getDestinationUser.lng()}`,
+        destinoLat: `${this.getDestinationUser.lat()}`,
+        origemLng: `${this.getOriginUser.lng()}`,
+        origemLat: `${this.getOriginUser.lat()}`,
         motorista: '',
         usuario: this.item.name,
-        preco: self.preco,
+        preco: self.price,
         status: ''
       });
   }
@@ -321,7 +334,7 @@ export class HomePage {
   // cancela() é um botão do confirmaCorrida. Chamada quando o usuário não deseja realizar a corrida e quer apagar a rota do mapa para fazer outro pedido
   cancela(){
     this.directionsDisplay.set('directions', null);
-    this.campoDestino.nativeElement.value = '';
+    this.inputDestino.nativeElement.value = '';
     this.escondeFazerPedido();
   }
 
@@ -330,13 +343,12 @@ export class HomePage {
     this.escondeAguardando();
     let cancelar = this.alertCtrl.create({
       title: 'Corrida cancelada com sucesso',
-      cssClass: 'teste'
     });
     cancelar.present();
     
     this.db.database.ref('/pedidos').child(this.uid).remove();
     this.directionsDisplay.set('directions', null);
-    this.campoDestino.nativeElement.value = '';
+    this.inputDestino.nativeElement.value = '';
   }
 
   // cancelarCorrida() é um botão do motoristaAceitou. Chamada quando o usuário decide cancelar a corrida quando o motorista já aceitou e está a caminho
@@ -357,7 +369,7 @@ export class HomePage {
 
             this.db.database.ref('/pedidos').child(this.uid).remove();
             this.directionsDisplay.set('directions', null);
-            this.campoDestino.nativeElement.value = '';
+            this.inputDestino.nativeElement.value = '';
           }
         }, {
           text: 'Não',
@@ -397,7 +409,7 @@ export class HomePage {
 
     this.escondeCorridaFinalizada();
     this.directionsDisplay.set('directions', null);
-    this.campoDestino.nativeElement.value = '';
+    this.inputDestino.nativeElement.value = '';
     this.db.database.ref('/pedidos').child(this.uid).remove(); 
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
