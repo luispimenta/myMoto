@@ -28,25 +28,26 @@ export class LoginPage {
   async login(user: User) {
     try {
       if(user.email !== undefined || user.password !== undefined){
-        this.afAuth.auth.signInWithEmailAndPassword(user.email.toLowerCase(), user.password).then((res: any) => {
-          let uid = res.user.uid;
-          
-          let listDB = this.db.database.ref(this.PATH).child(uid);
-          listDB.on('value', (snapshot) => {
-            const items = snapshot.val();
-                if(items == null){
-                  let alert = this.AlertCtrl.create({
-                    title: "Atenção",
-                    message: "Esse E-mail nao esta cadastrado como usuario",
-                    buttons: ['OK']
-                  });
-                  alert.present();
-                }else{
-                  this.navCtrl.setRoot(HomePage);
-                }
-              });
-                }).catch((error: any) =>
-          {
+        this.afAuth.auth.signInWithEmailAndPassword(user.email.toLowerCase(), user.password)
+          .then((res: any) => {
+            let uid = res.user.uid;
+            
+            let listDB = this.db.database.ref(this.PATH).child(uid);
+            listDB.on('value', (snapshot) => {
+              const items = snapshot.val();
+                  if(items == null){
+                    let alert = this.AlertCtrl.create({
+                      title: "Atenção",
+                      message: "Esse E-mail nao esta cadastrado como usuario",
+                      buttons: ['OK']
+                    });
+                    alert.present();
+                  } 
+                  else {
+                    this.navCtrl.setRoot(HomePage);
+                  }
+                });
+          }).catch((error: any) => {
             console.log(error);
             let alert = this.AlertCtrl.create({
               title: "Atenção",
@@ -55,7 +56,8 @@ export class LoginPage {
             });
             alert.present();
           });
-      }else{
+      } 
+      else {
         let alert = this.AlertCtrl.create({
           title: "Atenção",
           message: "Preencha todos os campos!",
@@ -84,19 +86,21 @@ export class LoginPage {
         },
         {
           text: "confirmar",
-          handler: data =>{
+          handler: data => {
             if(data.email == ""){
               this.toast.create({
                 message: 'Nenhum e-mail informado',
                 duration: 3000
               }).present();
-            }else{
+            }
+            else {
               let email = data.email;
-              this.afAuth.auth.sendPasswordResetEmail(email).then((data) =>{
-                this.toast.create({
-                  message: 'Enviamos um E-mail para '+email+', clique no link do E-mail para redefinir sua senha',
-                  showCloseButton: true
-                }).present();
+              this.afAuth.auth.sendPasswordResetEmail(email)
+                .then((data) =>{
+                  this.toast.create({
+                    message: 'Enviamos um E-mail para '+email+', clique no link do E-mail para redefinir sua senha',
+                    showCloseButton: true
+                  }).present();
               })
             }
           }
