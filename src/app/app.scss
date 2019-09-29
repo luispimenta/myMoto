@@ -1,5 +1,19 @@
 // Importações
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,700');
+// @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,700');
+@font-face{
+	font-family: 'Montserrat';
+	src: url('../assets/fonts/Montserrat/Montserrat-Regular.ttf');
+}
+
+@font-face{
+	font-family: 'Montserrat-bold';
+	src: url('../assets/fonts/Montserrat/Montserrat-Bold.ttf');
+}
+
+@font-face{
+	font-family: 'Montserrat-light';
+	src: url('../assets/fonts/Montserrat/Montserrat-Light.ttf');
+}
 
 // Estilização global
 *{

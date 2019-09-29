@@ -22,9 +22,9 @@
         margin: .2em .5em;
         border: none;
         border-radius: 5em;
+        font-family: 'Montserrat-bold';
 
         &::placeholder {
-          font-weight: bold;
           color: white;
         }
       }
@@ -52,14 +52,14 @@
       // color: black;
 
       h2{
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
       }
 
       button{
         padding: 1em 2em;
         border-radius: 5em;
         font-size: 1em;
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
         color: white;
       }
 
@@ -86,7 +86,7 @@
         padding: 1em 4em;
         border-radius: 5em;
         font-size: 1em;
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
         color: white;
       }
 
@@ -107,14 +107,14 @@
       color: white;
 
       h2{
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
       }
 
       button{
         padding: 1em 2em;
         border-radius: 5em;
         font-size: 1em;
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
         color: white;
       }
 
@@ -137,7 +137,7 @@
       color: white;
 
       h2{
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
         text-align: center;
       }
 
@@ -157,7 +157,7 @@
         padding: 1em 2em;
         border-radius: 5em;
         font-size: 1em;
-        font-weight: bold;
+        font-family: 'Montserrat-bold';
         color: white;
         display: block;
         margin-left: auto;
