@@ -29,9 +29,10 @@
         }
       }
     }
-    
-    .buttonConfig{
+
+    .buttonColor{
       background: #cc2851;
+      color: white;
     }
 
     // Div com informações sobre o pedido de corrida
@@ -145,12 +146,12 @@
         font-size: 1.3em;
         margin-bottom: -.5em;
         margin-left: 1em;
-        margin-right: 1em; 
+        margin-right: 1em;
       }
 
       ion-range{
         margin-left: 1em;
-        margin-right: 1em; 
+        margin-right: 1em;
       }
 
       button{

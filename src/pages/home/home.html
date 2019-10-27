@@ -6,11 +6,11 @@
     <input class="ion-input" #inputDestination placeholder="Para onde deseja ir?" />
 
     <ion-fab right>
-      <button class="buttonConfig" ion-fab mini>
+      <button class="buttonColor" ion-fab mini>
         <ion-icon name="settings"></ion-icon>
       </button>
       <ion-fab-list side="bottom">
-        <button (click)="logout()" ion-fab>
+        <button class="buttonColor" (click)="logout()" ion-fab>
           <ion-icon name="md-log-out"></ion-icon>
         </button>
       </ion-fab-list>
@@ -31,7 +31,7 @@
     <h3>Só um minuto, aguardando resposta do motorista...</h3>
     <button id="cancelarAguardando" (click)="cancelarAguardando()">Cancelar</button>
   </div>
-  
+
   <div id="motoristaAceitou" #motoristaAceitou>
     <h2>Corrida Aceita, aguarde no local</h2>
     <h3>Informações do Motorista</h3>
