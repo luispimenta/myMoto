@@ -31,18 +31,18 @@ export class LoginPage {
         this.afAuth.auth.signInWithEmailAndPassword(user.email.toLowerCase(), user.password)
           .then((res: any) => {
             let uid = res.user.uid;
-            
+
             let listDB = this.db.database.ref(this.PATH).child(uid);
             listDB.on('value', (snapshot) => {
               const items = snapshot.val();
                   if(items == null){
                     let alert = this.AlertCtrl.create({
                       title: "Atenção",
-                      message: "Esse E-mail nao esta cadastrado como usuario",
+                      message: "Esse E-mail não está cadastrado",
                       buttons: ['OK']
                     });
                     alert.present();
-                  } 
+                  }
                   else {
                     this.navCtrl.setRoot(HomePage);
                   }
@@ -51,12 +51,12 @@ export class LoginPage {
             console.log(error);
             let alert = this.AlertCtrl.create({
               title: "Atenção",
-              message: "Email ou senha incorreto!",
+              message: "Email ou senha inválido!",
               buttons: ['OK']
             });
             alert.present();
           });
-      } 
+      }
       else {
         let alert = this.AlertCtrl.create({
           title: "Atenção",

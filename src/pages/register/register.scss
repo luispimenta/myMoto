@@ -1,59 +1,60 @@
 page-register {
-	// imagem e degradê ao fundo
-	.background{
-		background-image: linear-gradient(37deg, rgba(153, 30, 61, .7), rgba(125, 38, 90, .7), rgba(84, 50, 103, .7), rgba(40, 55, 96, .7), rgba(9, 52, 76, .7));
-		width: 100vw;
-		height: 100vh;
-		background-size: cover;
-		background-position: center;
-	}
+  // imagem e degradê ao fundo
+  .background {
+    background-image: linear-gradient(37deg, rgba(153, 30, 61, .7), rgba(125, 38, 90, .7), rgba(84, 50, 103, .7), rgba(40, 55, 96, .7), rgba(9, 52, 76, .7));
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+  }
 
-	.degrade{
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+  .content {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-	// Logo ao topo da tela
-	.logo{
-		width: 50%;
-		margin-bottom: 3em;
-	}
+  // Logo ao topo da tela
+  .logo {
+    width: 50%;
+    margin-bottom: 2em;
+  }
 
-	// Configurações dos inputs
-	input {
-		border: 0px;
-        width: 100%;
-		margin-top: 15px;
-        color:white;
-        font-size: 1.2em;
-        border-radius: 5px;
-		background: rgba(255, 255, 255, .1);
-		padding: 15px 30px;
-	}
-	::placeholder {
-		color: white !important;
-		text-align: center;
-		font-size: 1.2em;
-	}
+  // Configurações dos inputs
+  input {
+    border: 0px;
+    width: 100%;
+    margin-top: 15px;
+    color: white;
+    font-size: 1.4em;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .1);
+    padding: 15px 30px;
+  }
 
-	// Configurações do botão de cadastro
-	.btnCadastrar{
-		padding: 10px 15px;
-        font-size: 1.6em;
-        background: white;
-        color: rgba(204, 40, 81, .7);
-        border-radius: 5px;
-        margin-top: 1em;
-        font-weight: 700;
-	}
+  ::placeholder {
+    color: white !important;
+    text-align: center;
+    font-size: 1.2em;
+  }
 
-	// Link para a página de Login
-	.linkLogin{
-		font-size: 1.6em;
-        font-weight: 400;
-        color: white;
-        margin-top: 2em;
-	}
+  // Configurações do botão de cadastro
+  .btnCadastrar {
+    padding: 10px 15px;
+    font-size: 1.6em;
+    background: white;
+    color: rgba(204, 40, 81, .7);
+    border-radius: 5px;
+    margin-top: 1em;
+    font-family: 'Montserrat-bold';
+  }
+
+  // Link para a página de Login
+  .linkLogin {
+    font-size: 1.6em;
+    font-weight: 400;
+    color: white;
+    margin-top: 2em;
+  }
 }

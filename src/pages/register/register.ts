@@ -28,7 +28,7 @@ export class RegisterPage {
     public alertCtrl: AlertController,
     private db: AngularFireDatabase) {
   }
-  
+
   async register(user: User) {
     if(user.email == undefined || user.password == undefined || this.confirm_pass == undefined || this.nome == undefined){
       this.toast.create({
@@ -44,7 +44,7 @@ export class RegisterPage {
             this.setId(res.user.uid);
 
             this.db.database.ref(this.PATH).child(this.getId())
-          .set({ 
+          .set({
             name: this.nome,
           }) .then((error) => {
                 console.log(error)
@@ -61,25 +61,25 @@ export class RegisterPage {
 
             if(user.password.length < 6){
               this.toast.create({
-                message: 'Senha precisa ter mais de 6 caracteres',
+                message: 'A seenha precisa ter no mínimo 6 caracteres',
                 duration: 3000
               }).present();
             }
             else{
               this.toast.create({
-                message: 'E-mail ja cadastrado',
+                message: 'E-mail já cadastrado',
                 duration: 3000
               }).present();
             }
           })
-          
+
         } catch (e) {
           console.error(e);
         }
       }
       else{
         this.toast.create({
-          message: 'Senha não confere com a confirmação',
+          message: 'Senhas diferentes, digite a mesma senha nos dois campos',
           duration: 3000
         }).present();
       }
