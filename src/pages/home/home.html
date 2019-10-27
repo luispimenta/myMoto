@@ -17,6 +17,7 @@
     </ion-fab>
   </div>
 
+  <!-- É exibida quando o usuário informa o seu local e destino -->
   <div id="fazerPedido" #fazerPedido>
     <h2>Realizar Pedido?</h2>
     <p id="distancia"></p>
@@ -27,11 +28,13 @@
     <button id="cancelar" (click)="cancela()">Cancelar</button>
   </div>
 
+  <!-- É exibida quando o usário faz o pedido de corrida -->
   <div id="aguardando" #aguardando>
     <h3>Só um minuto, aguardando resposta do motorista...</h3>
     <button id="cancelarAguardando" (click)="cancelarAguardando()">Cancelar</button>
   </div>
 
+  <!-- É exibida quando um motorista aceita aquele corrida -->
   <div id="motoristaAceitou" #motoristaAceitou>
     <h2>Corrida Aceita, aguarde no local</h2>
     <h3>Informações do Motorista</h3>
@@ -39,11 +42,12 @@
     <p id="corMoto"></p>
     <p id="placaMoto"></p>
 
-    <!-- Este botão ainda não tem funcionalidade. A ideia é que quando clicado, uma página com mais informações do motorista seja exibida na tela -->
+    <!-- Chama a página com mais informações sobre o motorista -->
     <button id="verMais" (click)="verMais($event, uid)">Ver Mais</button>
     <button id="cancelarCorrida" (click)="cancelarCorrida()">Cancelar</button>
   </div>
 
+  <!-- É chamada quando o motorista define que a corrida foi finalizada -->
   <div id="corridaFinalizada" #corridaFinalizada>
     <h2>Corrida Finalizada</h2>
     <p>Para que a gente possa oferecer sempre bons serviços, de 0 a 10, qual nota você daria para o motorista?</p>
