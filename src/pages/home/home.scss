@@ -1,176 +1,144 @@
-  page-home {
-    #map{
-        height: 100%;
-    }
+page-home {
+  #map {
+    height: 100vh;
+  }
 
-    // div com os inputs de origem e destino
-    .directions {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      padding: .5em 0;
 
-      .ion-input {
-        color: white;
-        display: block;
-        width: 100%;
-        font-size: 15px;
-        padding: 15px;
-        background: #cc2851;
-        margin: .2em .5em;
-        border: none;
-        border-radius: 5em;
-        font-family: 'Montserrat-bold';
+  // div com os inputs de origem e destino
+  .directions {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: .5em 0;
+  }
 
-        &::placeholder {
-          color: white;
-        }
-      }
-    }
+  .ion-input {
+    color: white;
+    display: block;
+    width: 100%;
+    font-size: 15px;
+    padding: 15px;
+    background: #cc2851;
+    margin: .2em .5em;
+    border: none;
+    border-radius: 5em;
+    font-family: 'Montserrat-bold';
+  }
 
-    .buttonColor{
-      background: #cc2851;
-      color: white;
-    }
+  ::placeholder {
+    color: white;
+  }
 
-    // Div com informações sobre o pedido de corrida
-    #fazerPedido{
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 15em;
-      background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
-      // background: rgb(204, 40, 81); rosa
-      // background: rgb(9, 52, 76); azul
-      // background: white;
-      // border-top: 5px solid #09344c;
-      // border-radius: 10px 10px 0px 0px;
-      text-align: center;
-      color: white;
-      // color: black;
 
-      h2{
-        font-family: 'Montserrat-bold';
-      }
+  // Botão com ícone de engrenagem e log out
+  ion-fab {
+    margin-top: 7.5em;
+  }
 
-      button{
-        padding: 1em 2em;
-        border-radius: 5em;
-        font-size: 1em;
-        font-family: 'Montserrat-bold';
-        color: white;
-      }
+  .buttonColor {
+    background: #cc2851;
+    color: white;
+  }
 
-      #aceitar{
-        background: #4BE360;
-      }
-      #cancelar{
-        background: #FF5561;
-      }
-    }
 
-    // Div avisando que o pedido foi realizado e é necessário aguardar a resposta de um motorista
-    #aguardando{
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 10em;
-      background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
-      text-align: center;
-      color: white;
+  // Título ao topo de cada div
+  h2 {
+    font-family: 'Montserrat-bold';
+    text-align: center;
+  }
 
-      button{
-        padding: 1em 4em;
-        border-radius: 5em;
-        font-size: 1em;
-        font-family: 'Montserrat-bold';
-        color: white;
-      }
 
-      #cancelarAguardando{
-        background: #FF5561;
-      }
-    }
+  // Estilos em comum dos botões dentro das divs
+  button.btn {
+    padding: 1em 2em;
+    border-radius: 5em;
+    font-size: 1em;
+    font-family: 'Montserrat-bold';
+    color: white;
+  }
 
-    // Div com informações sobre o motorista que aceitou a corrida
-    #motoristaAceitou{
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 20em;
-      background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
-      text-align: center;
-      color: white;
+  // Cores dos botões das divs
+  .btnAceitar {
+    background: #60CC61;
+  }
 
-      h2{
-        font-family: 'Montserrat-bold';
-      }
+  .btnCancelar {
+    background: #FF5561;
+  }
 
-      button{
-        padding: 1em 2em;
-        border-radius: 5em;
-        font-size: 1em;
-        font-family: 'Montserrat-bold';
-        color: white;
-      }
 
-      #verMais{
-        background: #4BE360;
-      }
-      #cancelarCorrida{
-        background: #FF5561;
-      }
-    }
+  // Div com informações sobre o pedido de corrida
+  #fazerPedido {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 15em;
+    background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
+    text-align: center;
+    color: white;
+  }
 
-    // Div de fim de corrida com pedido de nota ao motorista
-    #corridaFinalizada{
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 28em;
-      background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
-      color: white;
 
-      h2{
-        font-family: 'Montserrat-bold';
-        text-align: center;
-      }
+  // Div avisando que o pedido foi realizado e é necessário aguardar a resposta de um motorista
+  #aguardando {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10em;
+    background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
+    text-align: center;
+    color: white;
+  }
 
-      p{
-        font-size: 1.3em;
-        margin-bottom: -.5em;
-        margin-left: 1em;
-        margin-right: 1em;
-      }
+  #aguardando button#cancelarAguardando {
+    padding: 1em 4em;
+  }
 
-      ion-range{
-        margin-left: 1em;
-        margin-right: 1em;
-      }
 
-      button{
-        padding: 1em 2em;
-        border-radius: 5em;
-        font-size: 1em;
-        font-family: 'Montserrat-bold';
-        color: white;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
+  // Div com informações sobre o motorista que aceitou a corrida
+  #motoristaAceitou {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20em;
+    background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
+    text-align: center;
+    color: white;
+  }
 
-      #confirmar{
-        background: #4BE360;
-      }
-    }
 
-    ion-fab{
-      margin-top: 7.5em;
-    }
+  // Div de fim de corrida com pedido de nota ao motorista
+  #corridaFinalizada {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28em;
+    background-image: linear-gradient(37deg, rgba(153, 30, 61, .9), rgba(125, 38, 90, .9), rgba(84, 50, 103, .9), rgba(40, 55, 96, .9), rgba(9, 52, 76, .9));
+    color: white;
+  }
+
+  #corridaFinalizada p {
+    text-align: justify;
+    font-size: 1.3em;
+    margin-bottom: -.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  #corridaFinalizada ion-range {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  #corridaFinalizada button#confirmar {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

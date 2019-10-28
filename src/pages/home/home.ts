@@ -9,7 +9,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { LoginPage } from '../../pages/login/login';
 import { MotoristaPage } from './../motorista/motorista';
 
-declare var google;
+declare var google: any;
 
 @IonicPage()
 @Component({
@@ -84,7 +84,7 @@ export class HomePage {
           this.item = snapshot.val();
         });
 
-      } 
+      }
       else {
         this.navCtrl.setRoot(LoginPage);
       }
@@ -94,11 +94,11 @@ export class HomePage {
 
   initializeGoogleMaps() {
     this.directionsService = new google.maps.DirectionsService();
-    this.directionsDisplay = new google.maps.DirectionsRenderer({ 
-      polylineOptions: { 
+    this.directionsDisplay = new google.maps.DirectionsRenderer({
+      polylineOptions: {
         strokeColor: "#543267",
         strokeWeight: 5
-      } 
+      }
     });
 
     // Define Itapeva como o centro do mapa
@@ -129,15 +129,15 @@ export class HomePage {
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
         self.map.fitBounds(place.geometry.viewport);
-      } 
+      }
       else {
         self.map.setCenter(place.geometry.location);
         self.map.setZoom(17);
       }
-      
+
       self.addDirections();
     });
-    
+
     var autocompleteDestination = new google.maps.places.Autocomplete(this.inputDestino.nativeElement);
     autocompleteDestination.bindTo('bounds', this.map);
     autocompleteDestination.setFields(['address_components', 'geometry', 'icon', 'name']);
@@ -151,7 +151,7 @@ export class HomePage {
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
         self.map.fitBounds(place.geometry.viewport);
-      } 
+      }
       else {
         self.map.setCenter(place.geometry.location);
         self.map.setZoom(17);
@@ -164,7 +164,7 @@ export class HomePage {
     this.markerOrigin = new google.maps.Marker({
       map: this.map,
       anchorPoint: new google.maps.Point(0, -29),
-      // icon: '../../assets/imgs/destination.png'
+      // icon: '../../assets/imgs/default.png'
     });
 
     this.pegaPosicao();
@@ -188,10 +188,10 @@ export class HomePage {
 
         var geocoder = new google.maps.Geocoder;
         geocoder.geocode({
-          'location': { 
-            lat: this.startPosition.latitude, 
+          'location': {
+            lat: this.startPosition.latitude,
             lng: this.startPosition.longitude
-          } 
+          }
         }, function(results, status) {
           if (status === 'OK') {
             if (results[0]) {
@@ -256,7 +256,7 @@ export class HomePage {
           if (value.status == "finalizado") {
             this.escondeMotoristaAceitou();
             this.exibeCorridaFinalizada();
-          } 
+          }
           else {
             let dadosMotorista = this.db.database.ref('motoristas').child(value.motorista);
             dadosMotorista.once('value', (data) => {
@@ -308,7 +308,7 @@ export class HomePage {
     document.getElementById('preco').innerText = `Valor: R$${preco.toFixed(2)}`;
   }
 
-  divMotoristaAceitou(motorista){ 
+  divMotoristaAceitou(motorista){
     document.getElementById('nomeMotorista').innerText = `Nome: ${motorista.nome}`;
     document.getElementById('corMoto').innerText = `Cor da Moto: ${motorista.cor}`;
     document.getElementById('placaMoto').innerText = `Placa da Moto: ${motorista.placa}`;
@@ -345,7 +345,7 @@ export class HomePage {
       title: 'Corrida cancelada com sucesso',
     });
     cancelar.present();
-    
+
     this.db.database.ref('/pedidos').child(this.uid).remove();
     this.directionsDisplay.set('directions', null);
     this.inputDestino.nativeElement.value = '';
@@ -374,20 +374,20 @@ export class HomePage {
         }, {
           text: 'Não',
           handler: () => {
-            
+
           }
         }
       ]
     });
 
     alert.present();
-    
+
   }
 
   // confirmar() é um botão do corridaFinalizada. Chamada quando a corrida acaba e o usuário dá uma nota para o motorista
   confirmar(){
-    let corrida;
-    let motorista;
+    let corrida: any;
+    let motorista: any;
     let avaliacao: number;
 
     let userDB = this.db.database.ref('pedidos').child(this.uid);
@@ -399,7 +399,7 @@ export class HomePage {
     let listDB = this.db.database.ref('motoristas').child(motorista);
     listDB.once('value', (data) => {
       let dados = data.val();
-      corrida = dados.corridas+1; 
+      corrida = dados.corridas+1;
       avaliacao = dados.avaliacao + this.valorAvaliacaoInput;
       listDB.update({
         corridas: corrida,
@@ -410,7 +410,7 @@ export class HomePage {
     this.escondeCorridaFinalizada();
     this.directionsDisplay.set('directions', null);
     this.inputDestino.nativeElement.value = '';
-    this.db.database.ref('/pedidos').child(this.uid).remove(); 
+    this.db.database.ref('/pedidos').child(this.uid).remove();
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
     // Verificar se isso não faz um mapa ser exibido na frente do outro

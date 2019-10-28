@@ -24,14 +24,14 @@
     <p id="tempo"></p>
     <p id="preco"></p>
 
-    <button id="aceitar" (click)="envia()">Aceitar</button>
-    <button id="cancelar" (click)="cancela()">Cancelar</button>
+    <button class="btn btnAceitar" id="aceitar" (click)="envia()">Aceitar</button>
+    <button class="btn btnCancelar" id="cancelar" (click)="cancela()">Cancelar</button>
   </div>
 
   <!-- É exibida quando o usário faz o pedido de corrida -->
   <div id="aguardando" #aguardando>
     <h3>Só um minuto, aguardando resposta do motorista...</h3>
-    <button id="cancelarAguardando" (click)="cancelarAguardando()">Cancelar</button>
+    <button class="btn btnCancelar" id="cancelarAguardando" (click)="cancelarAguardando()">Cancelar</button>
   </div>
 
   <!-- É exibida quando um motorista aceita aquele corrida -->
@@ -43,8 +43,8 @@
     <p id="placaMoto"></p>
 
     <!-- Chama a página com mais informações sobre o motorista -->
-    <button id="verMais" (click)="verMais($event, uid)">Ver Mais</button>
-    <button id="cancelarCorrida" (click)="cancelarCorrida()">Cancelar</button>
+    <button class="btn btnAceitar" id="verMais" (click)="verMais($event, uid)">Ver Mais</button>
+    <button class="btn btnCancelar" id="cancelarCorrida" (click)="cancelarCorrida()">Cancelar</button>
   </div>
 
   <!-- É chamada quando o motorista define que a corrida foi finalizada -->
@@ -53,6 +53,6 @@
     <p>Para que a gente possa oferecer sempre bons serviços, de 0 a 10, qual nota você daria para o motorista?</p>
     <p>Observação: a sua resposta é altamente secreta, ninguém terá acesso a ela, pode ficar tranquilo!</p>
     <ion-range id="dual-range" type="number" min="0" max="10" step="1" dual-knobs pin color="dark" [(ngModel)]="valorAvaliacaoInput"></ion-range>
-    <button id="confirmar" (click)="confirmar()">Confirmar</button>
+    <button class="btn btnAceitar" id="confirmar" (click)="confirmar()">Confirmar</button>
   </div>
 </ion-content>
