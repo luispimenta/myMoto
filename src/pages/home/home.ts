@@ -427,6 +427,7 @@ export class HomePage {
   // Função para que o usuário saia da sua conta
   logout() {
     return this.afAuth.auth.signOut().then(() => {
+      this.db.database.ref('/pedidos').child(this.uid).remove();
       this.navCtrl.setRoot(LoginPage);
     }).catch((error) => console.log(error));
   }
