@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@ionic-native/network';
 import { Platform } from 'ionic-angular';
 
 // declare var Connection;
@@ -8,7 +8,7 @@ import { Platform } from 'ionic-angular';
 export class ConnectivityService {
 
   onDevice: boolean;
-  boolIsOnline: boolean;
+  boolIsOnline: boolean = false;
 
   constructor(public platform: Platform, private network: Network){
     this.onDevice = this.platform.is('cordova');

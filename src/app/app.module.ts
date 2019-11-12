@@ -13,6 +13,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 // Google maps
 import { Geolocation } from '@ionic-native/geolocation';
+import { Network } from '@ionic-native/network';
 import { ConnectivityService } from '../providers/connectivity-service';
 
 
@@ -48,6 +49,7 @@ import { MotoristaPage } from './../pages/motorista/motorista';
   providers: [
     LocationAccuracy,
     StatusBar,
+    Network,
     ConnectivityService,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

@@ -5,6 +5,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
+import { ConnectivityService } from '../../providers/connectivity-service';
+
 // Páginas
 import { LoginPage } from '../../pages/login/login';
 import { MotoristaPage } from './../motorista/motorista';
@@ -27,6 +29,9 @@ export class HomePage {
   @ViewChild('inputDestination') inputDestino: ElementRef;
 
   map: any;
+  mapInitialised: boolean = false;
+  apiKey: any = 'AIzaSyAfqddk6NK_yUfmF6m6ovYMPGdTWhzAGVc';
+
   directionsService: any;
   directionsDisplay: any;
   markerOrigin: any;
@@ -45,13 +50,17 @@ export class HomePage {
     private db: AngularFireDatabase,
     private geolocation: Geolocation,
     public alertCtrl: AlertController,
-    private locationAccuracy: LocationAccuracy
+    private locationAccuracy: LocationAccuracy,
+    private connectivityService: ConnectivityService
   ) {}
 
   ionViewDidLoad() {
       // this.gpsState();
       this.getUser();
-      this.initializeGoogleMaps();
+      // this.initializeGoogleMaps();
+
+      this.loadGoogleMaps();
+
       this.escondeFazerPedido();
       this.escondeAguardando();
       this.escondeMotoristaAceitou();
@@ -89,6 +98,91 @@ export class HomePage {
         this.navCtrl.setRoot(LoginPage);
       }
     });
+  }
+
+  loadGoogleMaps() {
+    this.addConnectivityListeners();
+
+    if(typeof google == "undefined" || typeof google.maps == "undefined") {
+      console.log("Google maps JavaScript needs to be loaded.");
+      this.disableMap();
+
+      if(this.connectivityService.isOnline()){
+        console.log("online, loading map");
+
+        //Load the SDK
+        window['mapInit'] = () => {
+          this.initMap();
+          this.enableMap();
+        }
+
+        let script = document.createElement("script");
+        script.id = "googleMaps";
+
+        if(this.apiKey){
+          script.src = 'http://maps.google.com/maps/api/js?key=' + this.apiKey + '&v=3.exp&libraries=places&callback=mapInit';
+        } else {
+          script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';
+        }
+
+        document.body.appendChild(script);
+      }
+    }
+    else {
+
+      if(this.connectivityService.isOnline()){
+        console.log("showing map");
+        this.initMap();
+        this.enableMap();
+      }
+      else {
+        console.log("disabling map");
+        this.disableMap();
+      }
+    }
+  }
+
+  initMap() {
+    this.mapInitialised = true;
+    this.initializeGoogleMaps();
+  }
+
+  disableMap(){
+    console.log("disable map");
+  }
+
+  enableMap(){
+    console.log("enable map");
+  }
+
+  addConnectivityListeners(){
+
+    let onOnline = () => {
+
+      setTimeout(() => {
+        if(typeof google == "undefined" || typeof google.maps == "undefined"){
+
+          this.loadGoogleMaps();
+
+        } else {
+
+          if(!this.mapInitialised){
+            this.initMap();
+          }
+
+          this.enableMap();
+        }
+      }, 2000);
+
+    };
+
+    let onOffline = () => {
+      this.disableMap();
+    };
+
+    document.addEventListener('online', onOnline, false);
+    document.addEventListener('offline', onOffline, false);
+
   }
 
 
@@ -414,7 +508,7 @@ export class HomePage {
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
     // Verificar se isso não faz um mapa ser exibido na frente do outro
-    this.initializeGoogleMaps();
+    // this.initializeGoogleMaps();
   }
 
   // Função que redireciona para a página com mais informações sobre o motorista
