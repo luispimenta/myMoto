@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -51,7 +51,8 @@ export class HomePage {
     private geolocation: Geolocation,
     public alertCtrl: AlertController,
     private locationAccuracy: LocationAccuracy,
-    private connectivityService: ConnectivityService
+    private connectivityService: ConnectivityService,
+    public loadingController: LoadingController
   ) {}
 
   ionViewDidLoad() {
@@ -479,7 +480,7 @@ export class HomePage {
   }
 
   // confirmar() é um botão do corridaFinalizada. Chamada quando a corrida acaba e o usuário dá uma nota para o motorista
-  confirmar(){
+  async confirmar(){
     let corrida: any;
     let motorista: any;
     let avaliacao: number;
@@ -502,9 +503,16 @@ export class HomePage {
     });
 
     this.escondeCorridaFinalizada();
+
+    const loading = await this.loadingController.create({
+      cssClass: 'loading'
+    });
+    loading.present();
+
     this.directionsDisplay.set('directions', null);
     this.inputDestino.nativeElement.value = '';
-    this.db.database.ref('/pedidos').child(this.uid).remove();
+    await this.db.database.ref('/pedidos').child(this.uid).remove()
+    loading.dismiss();
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
     // Verificar se isso não faz um mapa ser exibido na frente do outro
