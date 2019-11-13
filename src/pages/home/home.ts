@@ -420,7 +420,7 @@ export class HomePage {
         origemLat: `${this.getOriginUser.lat()}`,
         motorista: '',
         usuario: this.item.name,
-        preco: self.price,
+        preco: self.price.toFixed(2),
         status: ''
       });
   }
