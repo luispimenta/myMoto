@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { User } from '../../Models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -23,11 +23,16 @@ export class LoginPage {
     public AlertCtrl: AlertController,
     private db: AngularFireDatabase,
     private toast: ToastController,
+    public loadingController: LoadingController
     ) {}
 
   async login(user: User) {
     try {
       if(user.email !== undefined || user.password !== undefined){
+        const loading = await this.loadingController.create({
+          cssClass: 'loading'
+        });
+        loading.present();
         this.afAuth.auth.signInWithEmailAndPassword(user.email.toLowerCase(), user.password)
           .then((res: any) => {
             let uid = res.user.uid;
@@ -41,9 +46,11 @@ export class LoginPage {
                       message: "Esse E-mail não está cadastrado",
                       buttons: ['OK']
                     });
+                    loading.dismiss();
                     alert.present();
                   }
                   else {
+                    loading.dismiss();
                     this.navCtrl.setRoot(HomePage);
                   }
                 });
@@ -54,6 +61,7 @@ export class LoginPage {
               message: "Email ou senha inválido!",
               buttons: ['OK']
             });
+            loading.dismiss();
             alert.present();
           });
       }
@@ -63,6 +71,7 @@ export class LoginPage {
           message: "Preencha todos os campos!",
           buttons: ['OK']
         });
+        // loading.dismiss();
         alert.present();
       }
     } catch (e) {

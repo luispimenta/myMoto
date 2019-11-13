@@ -26,8 +26,8 @@ export class RegisterPage {
     private toast: ToastController,
     private afAuth: AngularFireAuth,
     public alertCtrl: AlertController,
-    private db: AngularFireDatabase) {
-  }
+    private db: AngularFireDatabase
+    ) {}
 
   async register(user: User) {
     if(user.email == undefined || user.password == undefined || this.confirm_pass == undefined || this.nome == undefined){
