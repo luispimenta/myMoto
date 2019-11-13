@@ -70,7 +70,8 @@ export class MotoristaPage {
         document.getElementById('avaliacao').innerText = 'Ainda sem avaliações';
       }
       else{
-        document.getElementById('avaliacao').innerText = motorista.avaliacao;
+        let mediaAvaliacao = motorista.avaliacao / motorista.corridas
+        document.getElementById('avaliacao').innerText = `${mediaAvaliacao.toFixed(2)}`;
       }
     }
 
