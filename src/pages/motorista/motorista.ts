@@ -66,7 +66,7 @@ export class MotoristaPage {
     }
 
     avaliacaoMotorista(motorista){
-      if(motorista.avaliacao == ""){
+      if(motorista.avaliacao == 0){
         document.getElementById('avaliacao').innerText = 'Ainda sem avaliações';
       }
       else{
