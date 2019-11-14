@@ -323,7 +323,7 @@ export class HomePage {
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
         self.distanciaFixed = distancia.toFixed(2);
-        self.price = (self.distanciaFixed * 3) + 4;
+        self.price = (self.distanciaFixed * 3);
         let tempo = result.routes[0].legs[0].duration.value/60;
 
         self.exibeFazerPedido();
