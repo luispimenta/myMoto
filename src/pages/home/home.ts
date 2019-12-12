@@ -322,9 +322,16 @@ export class HomePage {
         self.getOriginUser = result.routes[0].legs[0].start_location;
 
         let distancia = result.routes[0].legs[0].distance.value / 1000;
-        self.distanciaFixed = distancia.toFixed(2);
-        self.price = (self.distanciaFixed * 3);
+        self.distanciaFixed = distancia.toFixed(0);
+
+        console.log(self.distanciaFixed);
+
         let tempo = result.routes[0].legs[0].duration.value/60;
+        let tempoExato = tempo.toFixed(0);
+
+        // ~~ é para transformar as strings em números inteiros
+        // O preço base é R$5. A cada minuto é adicionado R$0.25, e a cada Km é adicionado R$1.00
+        self.price = (~~tempoExato * 0.25) + (~~self.distanciaFixed * 1 ) + 5;
 
         self.exibeFazerPedido();
         self.divConfirmaCorrida(distancia, tempo, self.price);
