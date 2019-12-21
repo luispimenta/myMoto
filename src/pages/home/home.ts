@@ -340,7 +340,7 @@ export class HomePage {
   }
 
   esperarPorAlteracoesNaCorrida() {
-    let pegarMotorista = this.db.database.ref('/pedidos').child(this.uid);
+    let pegarMotorista = this.db.database.ref('/corridas-pendentes').child(this.uid);
     pegarMotorista.on('value', (data) => {
       let value = data.val();
       if (value !== null) {
@@ -420,7 +420,7 @@ export class HomePage {
   // envia() é um botão do confirmaCorrida. Chamada quando o usuário deseja realizar a corrida e manda os seus dados para o firebase
   envia(){
     let self = this;
-    this.db.database.ref('/pedidos').child(this.uid)
+    this.db.database.ref('/corridas-pendentes').child(this.uid)
       .set({
         destinoLng: `${this.getDestinationUser.lng()}`,
         destinoLat: `${this.getDestinationUser.lat()}`,
@@ -448,7 +448,7 @@ export class HomePage {
     });
     cancelar.present();
 
-    this.db.database.ref('/pedidos').child(this.uid).remove();
+    this.db.database.ref('/corridas-pendentes').child(this.uid).remove();
     this.directionsDisplay.set('directions', null);
     this.inputDestino.nativeElement.value = '';
   }
@@ -469,7 +469,7 @@ export class HomePage {
             });
             cancelar.present();
 
-            this.db.database.ref('/pedidos').child(this.uid).remove();
+            this.db.database.ref('/corridas-pendentes').child(this.uid).remove();
             this.directionsDisplay.set('directions', null);
             this.inputDestino.nativeElement.value = '';
           }
@@ -491,10 +491,11 @@ export class HomePage {
     let corrida: any;
     let motorista: any;
     let avaliacao: number;
+    let dados: any;
 
-    let userDB = this.db.database.ref('pedidos').child(this.uid);
+    let userDB = this.db.database.ref('corridas-pendentes').child(this.uid);
     userDB.once('value', (data) => {
-      let dados = data.val();
+      dados = data.val();
       motorista = dados.motorista;
     });
 
@@ -518,7 +519,13 @@ export class HomePage {
 
     this.directionsDisplay.set('directions', null);
     this.inputDestino.nativeElement.value = '';
-    await this.db.database.ref('/pedidos').child(this.uid).remove()
+    await this.db.database.ref('/corridas-pendentes').child(this.uid).remove();
+    this.db.database.ref('/corridas-finalizadas').push({
+      preco: dados.preco,
+      motorista: motorista,
+      usuario: dados.usuario
+    });
+
     loading.dismiss();
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
@@ -536,7 +543,7 @@ export class HomePage {
   // Função para que o usuário saia da sua conta
   logout() {
     return this.afAuth.auth.signOut().then(() => {
-      this.db.database.ref('/pedidos').child(this.uid).remove();
+      this.db.database.ref('/corridas-pendentes').child(this.uid).remove();
       this.navCtrl.setRoot(LoginPage);
     }).catch((error) => console.log(error));
   }

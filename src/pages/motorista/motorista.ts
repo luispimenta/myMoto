@@ -27,7 +27,7 @@ export class MotoristaPage {
     }
 
     infoMotorista() {
-      let pegarMotorista = this.db.database.ref('pedidos').child(this.uid);
+      let pegarMotorista = this.db.database.ref('corridas-pendentes').child(this.uid);
       pegarMotorista.once('value', (data) => {
         let value = data.val();
 
