@@ -46,6 +46,8 @@ export class RegisterPage {
             this.db.database.ref(this.PATH).child(this.getId())
           .set({
             name: this.nome,
+            avaliacao: 0,
+            corridas: 0,
           }) .then((error) => {
                 console.log(error)
               });
