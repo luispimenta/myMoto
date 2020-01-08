@@ -55,4 +55,15 @@
     <ion-range id="dual-range" type="number" min="0" max="10" step="1" dual-knobs pin color="dark" [(ngModel)]="valorAvaliacaoInput"></ion-range>
     <button class="btn btnAceitar" id="confirmar" (click)="confirmar()">Confirmar</button>
   </div>
+
+  <!-- É chamada após o usuário dar nota ao motorista -->
+  <div id="reclamacao" #reclamacao>
+    <h2>Algo na corrida não foi bom?</h2>
+    <p>Se você teve algum tipo de problema pode fazer uma reclamação. Deseja ?</p>
+    <p>Observação: a sua resposta é altamente secreta, ninguém terá acesso a ela, pode ficar tranquilo!</p>
+    <div class="block-btn">
+      <button class="btn btnAceitar" (click)="reclamar()">Sim</button>
+      <button class="btn btnCancelar" (click)="naoReclamar()">Não</button>
+    </div>
+  </div>
 </ion-content>

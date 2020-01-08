@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -42,6 +42,8 @@ export class HomePage {
   item: any;
   price: any;
   valorAvaliacaoInput: number;
+  motorista: any;
+  id_motorista: any;
 
   constructor(
     public navCtrl: NavController,
@@ -52,7 +54,8 @@ export class HomePage {
     public alertCtrl: AlertController,
     private locationAccuracy: LocationAccuracy,
     private connectivityService: ConnectivityService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    public toastCtrl: ToastController
   ) {}
 
   ionViewDidLoad() {
@@ -66,6 +69,7 @@ export class HomePage {
       this.escondeAguardando();
       this.escondeMotoristaAceitou();
       this.escondeCorridaFinalizada();
+      this.escondeReclamacao();
   }
 
   gpsState(){
@@ -360,11 +364,12 @@ export class HomePage {
             this.exibeCorridaFinalizada();
           }
           else {
+            this.id_motorista = value.motorista
             let dadosMotorista = this.db.database.ref('motoristas').child(value.motorista);
             dadosMotorista.once('value', (data) => {
-              let motorista = data.val();
+              this.motorista = data.val();
 
-              this.divMotoristaAceitou(motorista);
+              this.divMotoristaAceitou(this.motorista);
               this.escondeAguardando();
               this.exibeMotoristaAceitou();
             });
@@ -387,6 +392,9 @@ export class HomePage {
   escondeCorridaFinalizada(){
     document.getElementById('corridaFinalizada').style.display = "none";
   }
+  escondeReclamacao(){
+    document.getElementById('reclamacao').style.display = "none";
+  }
 
 
   // Funções que exibem as divs
@@ -401,6 +409,9 @@ export class HomePage {
   }
   exibeCorridaFinalizada(){
     document.getElementById('corridaFinalizada').style.display = "block";
+  }
+  exibeReclamacao(){
+    document.getElementById('reclamacao').style.display = "block";
   }
 
   // Alterando valor de elementos dentro de divs
@@ -519,14 +530,24 @@ export class HomePage {
 
     this.directionsDisplay.set('directions', null);
     this.inputDestino.nativeElement.value = '';
+
     await this.db.database.ref('/corridas-pendentes').child(this.uid).remove();
+    let data = new Date();
+    let dataAtual = data.getDate()+"/"+(data.getMonth()+1)+"/"+data.getFullYear();
+
     this.db.database.ref('/corridas-finalizadas').push({
       preco: dados.preco,
-      motorista: motorista,
-      usuario: dados.usuario
+      id_motorista: motorista,
+      motorista: this.motorista.nome,
+      id_usuario: this.uid,
+      usuario: dados.usuario,
+      data: dataAtual
     });
 
+    await this.db.database.ref('/corridas-pendentes').child(this.uid).remove();
+
     loading.dismiss();
+    this.exibeReclamacao();
 
     // A intenção dessa linha é que quando o usuário chegue ao seu destino final, o mapa pegue a sua localização atual
     // Verificar se isso não faz um mapa ser exibido na frente do outro
@@ -538,6 +559,53 @@ export class HomePage {
     this.navCtrl.push(MotoristaPage,{
       item: this.uid
     });
+  }
+
+  reclamar() {
+    let alert = this.alertCtrl.create({
+      title: "Reclamação do usuario",
+      buttons: [{
+        text: 'Enviar',
+        handler: (data) => {
+          let loader = this.loadingController.create();
+          loader.present();
+          this.db.database.ref('reclamacoes').push({
+            por: this.uid,
+            para: this.id_motorista,
+            reclamacao: data.input
+          }).then(()=>{
+            loader.dismiss();
+            this.toastCtrl.create({
+              message: 'Reclamação enviada',
+              duration: 2500
+            }).present();
+            this.escondeReclamacao();
+          }).catch(()=>{
+            loader.dismiss();
+            this.toastCtrl.create({
+              message: 'Erro ao enviar',
+              duration: 2500
+            }).present();
+          });
+        }
+      },
+        {
+          text: 'Voltar',
+          handler: () => {}
+        }
+      ]
+    });
+    alert.addInput({
+      type: 'textarea',
+      name: 'input',
+      placeholder: 'Descreva o que te desagradou'
+    });
+
+    alert.present();
+  }
+
+  naoReclamar() {
+    this.escondeReclamacao();
   }
 
   // Função para que o usuário saia da sua conta
